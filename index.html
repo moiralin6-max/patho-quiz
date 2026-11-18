@@ -1,0 +1,1892 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#eef2f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1211" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="病理生理学刷题">
+<meta name="description" content="病理生理学离线刷题：章节练习、随机练习、自动记录进度与错题本。">
+<title>病理生理学 · 刷题</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --bg: #eef2f0;
+  --bg-grad: rgba(15, 118, 110, .10);
+  --surface: #ffffff;
+  --surface-2: #f4f7f6;
+  --surface-3: #e6eeeb;
+  --ink: #16211f;
+  --ink-2: #3c4c48;
+  --muted: #697a75;
+  --line: #dfe7e4;
+  --brand: #0f766e;
+  --brand-strong: #0b5e57;
+  --brand-soft: #e7f4f1;
+  --on-brand: #ffffff;
+  --ok: #177245;
+  --ok-soft: #eaf6ee;
+  --ok-line: #a9d8bb;
+  --bad: #b42318;
+  --bad-soft: #fdecea;
+  --bad-line: #f2b8b5;
+  --warn: #956000;
+  --warn-soft: #fff6e5;
+  --warn-line: #efd7a7;
+  --shadow: 0 1px 2px rgba(20, 45, 40, .04), 0 10px 30px rgba(20, 45, 40, .06);
+  --shadow-soft: 0 1px 2px rgba(20, 45, 40, .04), 0 3px 12px rgba(20, 45, 40, .04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1211;
+    --bg-grad: rgba(45, 212, 191, .07);
+    --surface: #121d1b;
+    --surface-2: #182522;
+    --surface-3: #21332e;
+    --ink: #e7f0ed;
+    --ink-2: #c3d1cd;
+    --muted: #96a8a3;
+    --line: #273934;
+    --brand: #2dd4bf;
+    --brand-strong: #5eead4;
+    --brand-soft: #10312c;
+    --on-brand: #04211d;
+    --ok: #4ade80;
+    --ok-soft: #10261a;
+    --ok-line: #245c3a;
+    --bad: #f87171;
+    --bad-soft: #2a1515;
+    --bad-line: #5f2626;
+    --warn: #fbbf24;
+    --warn-soft: #261d0b;
+    --warn-line: #5a451c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .25);
+    --shadow-soft: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .2);
+  }
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(900px 420px at 50% -140px, var(--bg-grad), transparent 70%),
+    var(--bg);
+  color: var(--ink);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "SF Pro SC", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button { font: inherit; color: inherit; }
+button:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 55%, transparent); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+.wrap { max-width: 820px; margin: 0 auto; padding: 0 16px 32px; }
+@media (min-width: 700px) { .wrap { padding: 0 24px 44px; } }
+
+/* ---------- home ---------- */
+
+.hero {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: calc(28px + env(safe-area-inset-top)) 16px 16px;
+}
+@media (min-width: 700px) { .hero { padding: calc(52px + env(safe-area-inset-top)) 24px 20px; } }
+
+.eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: var(--brand-strong);
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 7px 0 7px;
+  font-size: clamp(27px, 5.6vw, 37px);
+  line-height: 1.2;
+  letter-spacing: .02em;
+}
+
+.hero p { margin: 0; color: var(--muted); font-size: 13.5px; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin: 4px 0 18px;
+}
+
+.stat {
+  display: block;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 13px;
+  box-shadow: var(--shadow-soft);
+  min-width: 0;
+}
+.stat .num {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .01em;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+.stat .num .den { font-size: 11.5px; color: var(--muted); font-weight: 500; }
+.stat .lab { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+.stat.wrong .num { color: var(--bad); }
+button.stat { cursor: pointer; border: 1px solid var(--line); }
+button.stat:hover { border-color: var(--bad-line); }
+@media (max-width: 380px) {
+  .stat { padding: 10px; }
+  .stat .num { font-size: 19px; }
+}
+
+.resume {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--line));
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--brand-soft), var(--surface) 78%);
+  box-shadow: var(--shadow-soft);
+}
+.resume .grow { flex: 1; min-width: 0; }
+.resume-kicker { font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--brand-strong); }
+.resume-title {
+  font-size: 15.5px;
+  font-weight: 650;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.resume-sub { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+.resume .btn { flex: 0 0 auto; min-height: 42px; padding: 8px 18px; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 22px 0 10px;
+}
+.section-head h2 { margin: 0; font-size: 15px; letter-spacing: .02em; }
+
+.seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  border-radius: 10px;
+}
+.seg button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 5px 12px;
+  border-radius: 7px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  cursor: pointer;
+  min-height: 29px;
+}
+.seg button.active {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(20, 45, 40, .12);
+}
+
+.chapter-list { display: grid; gap: 10px; }
+
+.chapter-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 15px 17px;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.chapter-card:hover { border-color: var(--brand); transform: translateY(-1px); }
+.chapter-card:active { transform: translateY(0); }
+.chapter-top { display: flex; align-items: center; gap: 10px; }
+.chapter-name { flex: 1; font-weight: 650; font-size: 16.5px; }
+.chapter-count { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.chapter-card .bar { margin: 12px 0 8px; }
+.chapter-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.bar { height: 6px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--brand); border-radius: 999px; transition: width .3s ease; }
+
+.home-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 18px;
+}
+.span2 { grid-column: 1 / -1; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 14.5px;
+  line-height: 1.3;
+  background: var(--surface);
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.btn.primary { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.btn.primary:hover { background: var(--brand-strong); border-color: var(--brand-strong); }
+.btn.ghost { background: var(--surface); border-color: var(--line); color: var(--ink); }
+.btn.ghost:hover { border-color: var(--brand); color: var(--brand-strong); }
+.btn.danger { background: var(--bad); border-color: var(--bad); color: #fff; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn:disabled:hover { border-color: var(--line); color: var(--ink); }
+.btn.primary:disabled:hover { background: var(--brand); border-color: var(--brand); }
+.btn.block { width: 100%; }
+
+.foot {
+  margin-top: 28px;
+  padding-top: 15px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.foot p { margin: 0; }
+.foot button {
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.foot button:hover { color: var(--bad); }
+
+/* ---------- shared top bar ---------- */
+
+.practice-head {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .practice-head {
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+}
+
+.topbar {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  padding-top: calc(9px + env(safe-area-inset-top));
+}
+@media (min-width: 700px) { .topbar { padding-left: 20px; padding-right: 20px; } }
+
+.topbar-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 650;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.icon-btn {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+.icon-btn:hover { border-color: var(--brand); }
+.link-btn {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  cursor: pointer;
+  color: var(--ink-2);
+  white-space: nowrap;
+  min-height: 36px;
+}
+.link-btn:hover { border-color: var(--brand); color: var(--brand-strong); }
+.link-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.progress-track { height: 4px; background: var(--surface-3); }
+.progress-track > i { display: block; height: 100%; width: 0; background: var(--brand); transition: width .25s ease; }
+.progress-meta {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 6px 16px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+@media (min-width: 700px) { .progress-meta { padding-left: 24px; padding-right: 24px; } }
+
+/* ---------- practice ---------- */
+
+.practice-wrap {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 13px 13px 118px;
+}
+@media (min-width: 700px) { .practice-wrap { padding: 18px 24px 110px; } }
+
+.navigator {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px 11px;
+  margin-bottom: 11px;
+  box-shadow: var(--shadow-soft);
+}
+.nav-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(37px, 1fr));
+  gap: 6px;
+  max-height: 204px;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.nav-cell {
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-size: 12px;
+  color: var(--ink-2);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-variant-numeric: tabular-nums;
+}
+.nav-cell:hover { border-color: var(--brand); }
+.nav-cell.ok { background: var(--ok-soft); border-color: var(--ok-line); color: var(--ok); }
+.nav-cell.bad { background: var(--bad-soft); border-color: var(--bad-line); color: var(--bad); }
+.nav-cell.current { box-shadow: inset 0 0 0 2px var(--brand); font-weight: 700; color: var(--brand-strong); }
+.nav-legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 11px; color: var(--muted); margin-top: 9px; }
+.nav-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.nav-legend i { width: 10px; height: 10px; border-radius: 3px; border: 1px solid var(--line); background: var(--surface-2); }
+.nav-legend i.ok { background: var(--ok); border-color: var(--ok); }
+.nav-legend i.bad { background: var(--bad); border-color: var(--bad); }
+.nav-legend i.cur { box-shadow: inset 0 0 0 2px var(--brand); }
+
+.qcard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 17px 15px 19px;
+  box-shadow: var(--shadow);
+}
+@media (min-width: 700px) { .qcard { padding: 25px 27px 27px; } }
+
+.qmeta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 9px; }
+.qnum { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .03em; margin-right: 2px; font-variant-numeric: tabular-nums; }
+.tag {
+  font-size: 11px;
+  line-height: 1;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.tag.type { color: var(--brand-strong); background: var(--brand-soft); border-color: transparent; }
+.tag.hot { color: var(--warn); background: var(--warn-soft); border-color: var(--warn-line); }
+.tag.ok { color: var(--ok); background: var(--ok-soft); border-color: var(--ok-line); }
+
+.stem {
+  margin: 2px 0 4px;
+  font-size: 18px;
+  line-height: 1.65;
+  font-weight: 600;
+  letter-spacing: .01em;
+  overflow-wrap: break-word;
+}
+@media (min-width: 700px) { .stem { font-size: 19.5px; } }
+
+.q-hint { margin: 6px 0 0; font-size: 12.5px; color: var(--muted); }
+
+.options { margin-top: 13px; display: grid; gap: 8px; }
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  width: 100%;
+  min-height: 48px;
+  text-align: left;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color .12s ease, background .12s ease;
+}
+.opt .key {
+  flex: 0 0 27px;
+  width: 27px;
+  height: 27px;
+  margin-top: 1px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  display: grid;
+  place-items: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.opt .text { flex: 1; min-width: 0; font-size: 15px; line-height: 1.55; color: var(--ink); overflow-wrap: break-word; }
+.opt .mark { flex: 0 0 18px; margin-top: 3px; font-size: 13px; font-weight: 700; text-align: center; }
+.opt:hover { border-color: var(--brand); }
+.opt.selected { background: var(--brand-soft); border-color: var(--brand); }
+.opt.selected .key { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.opt.selected .mark { color: var(--brand-strong); }
+.opt.correct { background: var(--ok-soft); border-color: var(--ok-line); }
+.opt.correct .key { background: var(--ok); border-color: var(--ok); color: #fff; }
+.opt.correct .mark { color: var(--ok); }
+.opt.wrong { background: var(--bad-soft); border-color: var(--bad-line); }
+.opt.wrong .key { background: var(--bad); border-color: var(--bad); color: #fff; }
+.opt.wrong .mark { color: var(--bad); }
+.opt:disabled { opacity: 1; cursor: default; }
+.opt:disabled:hover { border-color: var(--line); }
+.opt.correct:disabled:hover { border-color: var(--ok-line); }
+.opt.wrong:disabled:hover { border-color: var(--bad-line); }
+
+.feedback {
+  margin-top: 15px;
+  scroll-margin-bottom: 112px;
+  padding: 11px 13px;
+  border: 1px solid;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex-wrap: wrap;
+}
+.feedback.ok { background: var(--ok-soft); border-color: var(--ok-line); }
+.feedback.bad { background: var(--bad-soft); border-color: var(--bad-line); }
+.fb-main { flex: 1; min-width: 170px; }
+.fb-title { font-size: 14.5px; font-weight: 700; }
+.feedback.ok .fb-title { color: var(--ok); }
+.feedback.bad .fb-title { color: var(--bad); }
+.fb-sub { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
+.fb-sub b { font-weight: 700; }
+.fb-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.fb-btn {
+  border: 1px solid currentColor;
+  background: transparent;
+  border-radius: 9px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  cursor: pointer;
+  color: var(--ink-2);
+}
+.fb-btn:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+
+.note {
+  margin-top: 11px;
+  padding: 9px 12px;
+  border: 1px solid var(--warn-line);
+  background: var(--warn-soft);
+  border-radius: 11px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.note b { color: var(--warn); }
+
+.keyhint {
+  margin: 13px 2px 0;
+  font-size: 11.5px;
+  color: var(--muted);
+  text-align: center;
+}
+@media (hover: none), (pointer: coarse) { .keyhint { display: none; } }
+
+.actionbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  padding: 10px 13px calc(10px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--bg) 60%, transparent);
+}
+@media (min-width: 700px) { .actionbar { padding-left: 24px; padding-right: 24px; } }
+.actionbar-inner { max-width: 820px; margin: 0 auto; display: flex; gap: 9px; }
+.actionbar .btn { min-height: 50px; }
+.actionbar .btn.prev { flex: 0 0 102px; }
+.actionbar .btn.next { flex: 1; }
+.actionbar .btn.skip { flex: 0 0 70px; font-size: 13px; }
+
+/* ---------- wrong book ---------- */
+
+.wrong-wrap { max-width: 820px; margin: 0 auto; padding: 13px 13px calc(36px + env(safe-area-inset-bottom)); }
+@media (min-width: 700px) { .wrong-wrap { padding: 18px 24px 48px; } }
+
+.wrong-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 11px;
+  box-shadow: var(--shadow-soft);
+}
+.wrong-summary .grow { flex: 1; min-width: 150px; }
+.wrong-summary .big { font-size: 14.5px; font-weight: 650; }
+.wrong-summary .big strong { font-size: 19px; color: var(--brand-strong); font-variant-numeric: tabular-nums; }
+.wrong-summary .sub { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+.summary-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.mini-btn {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 9px;
+  padding: 6px 10px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink-2);
+  cursor: pointer;
+  min-height: 32px;
+}
+.mini-btn:hover { border-color: var(--brand); color: var(--brand-strong); }
+
+@media (max-width: 480px) {
+  .wrong-summary { align-items: flex-start; }
+  .wrong-summary .grow { flex: 1 1 100%; min-width: 0; }
+  .summary-actions { width: 100%; }
+}
+
+.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.chip {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 6px 11px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--muted);
+  cursor: pointer;
+  min-height: 31px;
+}
+.chip:hover { border-color: var(--brand); }
+.chip.active { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
+.chip .n { opacity: .75; margin-left: 3px; font-variant-numeric: tabular-nums; }
+
+.wrong-list { display: grid; gap: 10px; margin-top: 11px; }
+
+.wrong-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 15px 14px 14px;
+  box-shadow: var(--shadow-soft);
+}
+@media (min-width: 700px) { .wrong-item { padding: 18px 19px 16px; } }
+.wrong-head { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted); margin-bottom: 7px; }
+.wrong-head .grow { flex: 1; min-width: 90px; }
+.wrong-item h3 { margin: 0 0 9px; font-size: 15.5px; line-height: 1.6; font-weight: 650; overflow-wrap: break-word; }
+.wrong-item .options { margin-top: 0; gap: 5px; }
+.wrong-item .opt { min-height: 0; padding: 7px 10px; border-radius: 9px; cursor: default; }
+.wrong-item .opt .key { flex-basis: 23px; width: 23px; height: 23px; border-radius: 7px; font-size: 11.5px; }
+.wrong-item .opt .text { font-size: 13.5px; line-height: 1.5; }
+.wrong-item .opt:hover { border-color: var(--line); }
+.wrong-item .opt.correct:hover { border-color: var(--ok-line); }
+.wrong-item .opt.wrong:hover { border-color: var(--bad-line); }
+.wrong-answer { display: flex; gap: 13px; flex-wrap: wrap; margin-top: 9px; font-size: 12px; color: var(--muted); }
+.wrong-answer b { font-weight: 700; }
+.wrong-answer .bad { color: var(--bad); }
+.wrong-answer .good { color: var(--ok); }
+.wrong-actions { display: flex; gap: 7px; margin-top: 11px; flex-wrap: wrap; }
+.wrong-actions .btn { min-height: 36px; padding: 6px 12px; font-size: 12.5px; border-radius: 9px; }
+
+.empty {
+  text-align: center;
+  padding: 42px 18px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+}
+.empty .em-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 10px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ok-soft);
+  color: var(--ok);
+  font-size: 20px;
+  font-weight: 700;
+}
+.empty h3 { margin: 0 0 4px; font-size: 15.5px; color: var(--ink); }
+.empty p { margin: 0 0 14px; font-size: 12.5px; }
+
+/* ---------- dialogs & toast ---------- */
+
+dialog {
+  border: 0;
+  padding: 0;
+  width: min(92vw, 420px);
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .32);
+}
+dialog::backdrop { background: rgba(6, 20, 18, .52); }
+.dlg-body { padding: 21px 21px 17px; }
+.dlg-title { margin: 0 0 6px; font-size: 17.5px; font-weight: 700; }
+.dlg-text { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.65; }
+.dlg-actions { display: flex; gap: 8px; padding: 0 21px 20px; }
+.dlg-actions .btn { flex: 1; min-height: 43px; font-size: 13.5px; }
+.done-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin: 15px 0 2px; }
+.done-stat { text-align: center; background: var(--surface-2); border-radius: 11px; padding: 9px 5px; }
+.done-stat b { display: block; font-size: 19px; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.done-stat span { font-size: 11px; color: var(--muted); }
+.done-note { margin: 10px 0 0; font-size: 12px; color: var(--warn); }
+.done-note:empty { display: none; }
+.dlg-actions.col { flex-direction: column; }
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(26px + env(safe-area-inset-bottom));
+  transform: translate(-50%, 14px);
+  z-index: 100;
+  max-width: 90vw;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #10201d;
+  color: #fff;
+  font-size: 13px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .25);
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (prefers-color-scheme: dark) {
+  #toast { background: #e7f0ed; color: #10201d; }
+  .opt.correct .key { color: #04211d; }
+  .opt.wrong .key { color: #2a0b0b; }
+  .btn.danger { color: #2a0b0b; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<noscript>
+  <div style="max-width:640px;margin:40px auto;padding:20px;border:1px solid #ddd;border-radius:12px;font:15px/1.7 sans-serif;">
+    本页需要启用 JavaScript 才能答题。请在浏览器设置中开启 JavaScript 后刷新。
+  </div>
+</noscript>
+
+<!-- ============ 首页 ============ -->
+<section id="view-home" class="view">
+  <header class="hero">
+    <div class="eyebrow">Pathophysiology · 自测</div>
+    <h1>病理生理学刷题</h1>
+    <p>章节练习 · 自动记录 · 错题集中复习，电脑和手机都能用。</p>
+  </header>
+
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat">
+        <div class="num"><span id="stat-done">0</span><span class="den"> / <span id="stat-total">174</span></span></div>
+        <div class="lab">已练题目</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="stat-acc">—</div>
+        <div class="lab">正确率</div>
+      </div>
+      <button type="button" class="stat wrong" id="stat-wrong-card">
+        <div class="num" id="stat-wrong">0</div>
+        <div class="lab">错题</div>
+      </button>
+    </div>
+
+    <div id="resume-slot" hidden></div>
+
+    <div class="section-head">
+      <h2>选择章节</h2>
+      <div class="seg" id="mode-seg" role="group" aria-label="练习顺序">
+        <button type="button" data-mode="seq" class="active">顺序</button>
+        <button type="button" data-mode="random">随机</button>
+      </div>
+    </div>
+
+    <div class="chapter-list" id="chapter-list"></div>
+
+    <div class="home-actions">
+      <button type="button" class="btn primary span2" id="btn-start-all">开始全部练习</button>
+      <button type="button" class="btn ghost" id="btn-wrong-practice">错题重练</button>
+      <button type="button" class="btn ghost" id="btn-wrong-book">查看错题本</button>
+    </div>
+
+    <footer class="foot">
+      <p>题目与参考答案整理自离线自测资料；个别答案存疑处已在题内标注，请以教材为准。<br>
+      练习记录仅保存在当前浏览器，换设备不会同步。</p>
+      <button type="button" id="btn-reset">清空全部记录</button>
+    </footer>
+  </div>
+</section>
+
+<!-- ============ 练习 ============ -->
+<section id="view-practice" class="view" hidden>
+  <div class="practice-head">
+    <div class="topbar">
+      <button type="button" class="icon-btn" id="btn-practice-back" aria-label="返回首页">←</button>
+      <div class="topbar-title" id="practice-title">练习</div>
+      <button type="button" class="link-btn" id="btn-nav-toggle" aria-expanded="false" aria-controls="navigator">题目列表</button>
+    </div>
+    <div class="progress-meta">
+      <span id="practice-progress-text">第 1 / 1 题</span>
+      <span id="practice-progress-sub">本轮已答 0 题</span>
+    </div>
+    <div class="progress-track"><i id="practice-progress-bar"></i></div>
+  </div>
+
+  <div class="practice-wrap">
+    <div class="navigator" id="navigator" hidden>
+      <div class="nav-head"><span>题目导航</span><span>点击跳转</span></div>
+      <div class="nav-grid" id="nav-grid"></div>
+      <div class="nav-legend">
+        <span><i class="ok"></i>答对</span>
+        <span><i class="bad"></i>答错</span>
+        <span><i class="cur"></i>当前</span>
+      </div>
+    </div>
+    <div id="question-area"></div>
+  </div>
+
+  <div class="actionbar" id="actionbar"></div>
+</section>
+
+<!-- ============ 错题本 ============ -->
+<section id="view-wrong" class="view" hidden>
+  <div class="practice-head">
+    <div class="topbar">
+      <button type="button" class="icon-btn" id="btn-wrong-back" aria-label="返回首页">←</button>
+      <div class="topbar-title">错题本</div>
+      <button type="button" class="link-btn" id="btn-wrong-retry-all">重练全部</button>
+    </div>
+  </div>
+
+  <div class="wrong-wrap">
+    <div class="wrong-summary" id="wrong-summary"></div>
+    <div class="filter-row" id="wrong-filters"></div>
+    <div class="filter-row" id="wrong-type-filters"></div>
+    <div class="wrong-list" id="wrong-list"></div>
+  </div>
+</section>
+
+<!-- ============ 对话框 ============ -->
+<dialog id="confirm-dialog" aria-labelledby="confirm-title">
+  <div class="dlg-body">
+    <h2 class="dlg-title" id="confirm-title">确认</h2>
+    <p class="dlg-text" id="confirm-text"></p>
+  </div>
+  <div class="dlg-actions">
+    <button type="button" class="btn ghost" id="confirm-cancel">取消</button>
+    <button type="button" class="btn primary" id="confirm-ok">确定</button>
+  </div>
+</dialog>
+
+<dialog id="done-dialog" aria-labelledby="done-title">
+  <div class="dlg-body">
+    <h2 class="dlg-title" id="done-title">本轮练习完成</h2>
+    <p class="dlg-text" id="done-text"></p>
+    <div class="done-stats" id="done-stats"></div>
+    <p class="done-note" id="done-note"></p>
+  </div>
+  <div class="dlg-actions col">
+    <button type="button" class="btn primary" id="done-continue" hidden>继续作答</button>
+    <button type="button" class="btn ghost" id="done-home">返回首页</button>
+    <button type="button" class="btn ghost" id="done-retry">再做一遍</button>
+    <button type="button" class="btn ghost" id="done-wrong">查看错题本</button>
+  </div>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+window.QUIZ_DATA = {"chapters":["第二章疾病概论","第六章应激"],"questions":[{"id":"1-1","ch":"第二章疾病概论","num":1,"type":"单选","stem":"作为脑死亡的标准与下列哪项无关","opts":[{"k":"A","t":"自主呼吸停止"},{"k":"B","t":"心跳停止"},{"k":"C","t":"不可逆昏迷和大脑无反应性"},{"k":"D","t":"颅神经反射消失"},{"k":"E","t":"瞳孔散大或固定"}],"ans":["B"],"note":"","freq":2},{"id":"1-2","ch":"第二章疾病概论","num":2,"type":"单选","stem":"分子病不包括","opts":[{"k":"A","t":"酶缺乏所致的疾病"},{"k":"B","t":"受体病"},{"k":"C","t":"细胞蛋白缺陷所致的疾病"},{"k":"D","t":"细胞膜载体蛋白缺陷引起的疾病"},{"k":"E","t":"染色体病"}],"ans":["E"],"note":"","freq":1},{"id":"1-3","ch":"第二章疾病概论","num":3,"type":"单选","stem":"下列哪项不属于基本病理过程","opts":[{"k":"A","t":"肺炎"},{"k":"B","t":"休克"},{"k":"C","t":"缺氧"},{"k":"D","t":"发热"},{"k":"E","t":"水肿"}],"ans":["A"],"note":"","freq":1},{"id":"1-4","ch":"第二章疾病概论","num":4,"type":"单选","stem":"死亡的标志是","opts":[{"k":"A","t":"心跳停止"},{"k":"B","t":"脑死亡"},{"k":"C","t":"呼吸停止"},{"k":"D","t":"瞳孔散大"},{"k":"E","t":"脑电波处于零电位"}],"ans":["B"],"note":"","freq":2},{"id":"1-5","ch":"第二章疾病概论","num":5,"type":"单选","stem":"死亡的概念是指","opts":[{"k":"A","t":"呼吸、心跳停止，反射消失"},{"k":"B","t":"有机体解体，所有细胞死亡"},{"k":"C","t":"全脑功能不可逆性永久性停止"},{"k":"D","t":"意识永久性消失而呈植物人状态"},{"k":"E","t":"脑电波消失"}],"ans":["C"],"note":"","freq":1},{"id":"1-6","ch":"第二章疾病概论","num":6,"type":"单选","stem":"全脑机能的永久性停止称为","opts":[{"k":"A","t":"植物人状态"},{"k":"B","t":"濒死状态"},{"k":"C","t":"脑死亡"},{"k":"D","t":"生物学死亡"},{"k":"E","t":"临床死亡"}],"ans":["C"],"note":"","freq":2},{"id":"1-7","ch":"第二章疾病概论","num":7,"type":"单选","stem":"有关健康的正确提法是","opts":[{"k":"A","t":"健康是指体格健全没有疾病"},{"k":"B","t":"不生病就是健康"},{"k":"C","t":"健康是指社会适应能力的完全良好状态"},{"k":"D","t":"健康是指精神上的完全良好状态"},{"k":"E","t":"健康不仅是指没有疾病或病痛，而且是躯体上、精神上和社会上的完好状态"}],"ans":["E"],"note":"","freq":3},{"id":"1-8","ch":"第二章疾病概论","num":8,"type":"单选","stem":"疾病的概念下列哪项提法正确","opts":[{"k":"A","t":"是机体在一定病因损害下，因自稳调节紊乱而发生的异常生命活动"},{"k":"B","t":"疾病即指机体不舒服"},{"k":"C","t":"疾病是机体对内环境的协调障碍"},{"k":"D","t":"疾病是不健康的生命活动过程"},{"k":"E","t":"细胞是生命的基本单位，疾病是细胞受损的表现"}],"ans":["A"],"note":"","freq":1},{"id":"1-9","ch":"第二章疾病概论","num":9,"type":"单选","stem":"下列中哪项是错误的叙述","opts":[{"k":"A","t":"条件是指在疾病原因的作用下，对疾病发生和发展有影响的因素"},{"k":"B","t":"条件包括自然条件和社会条件"},{"k":"C","t":"某一疾病是条件的因素，可能是另一疾病的原因"},{"k":"D","t":"条件对于疾病是必不可少的"},{"k":"E","t":"条件可促进或延缓疾病的发生"}],"ans":["D"],"note":"","freq":1},{"id":"1-10","ch":"第二章疾病概论","num":10,"type":"单选","stem":"病因学研究的是","opts":[{"k":"A","t":"疾病发生密切相关的危险因素"},{"k":"B","t":"疾病发生的原因与条件"},{"k":"C","t":"疾病时自稳调节紊乱的机制"},{"k":"D","t":"疾病转归的机制"},{"k":"E","t":"因果转化规律"}],"ans":["B"],"note":"","freq":2},{"id":"1-11","ch":"第二章疾病概论","num":11,"type":"单选","stem":"下列说法不正确的是","opts":[{"k":"A","t":"每种疾病一般来说都有病因"},{"k":"B","t":"病因是引起疾病的必不可少的，决定疾病特异性的因素"},{"k":"C","t":"没有病因，不可能发生相关的疾病"},{"k":"D","t":"没有病因也可发生某些遗传性疾病"},{"k":"E","t":"疾病发生发展中原因与条件是相对的，有时是可转化的"}],"ans":["D"],"note":"","freq":1},{"id":"1-12","ch":"第二章疾病概论","num":12,"type":"单选","stem":"疾病发生的条件不正确的说法是","opts":[{"k":"A","t":"主要是指那些能够影响疾病发生的各种机体内外因素"},{"k":"B","t":"它们本身不能引起疾病"},{"k":"C","t":"可以左右病因对机体的影响促进疾病的发生"},{"k":"D","t":"年龄和性别也可作为某些疾病的发生条件"},{"k":"E","t":"条件在疾病发生中的作用是固定不变的"}],"ans":["E"],"note":"","freq":1},{"id":"1-13","ch":"第二章疾病概论","num":13,"type":"单选","stem":"下列正确的陈述是","opts":[{"k":"A","t":"只要有病因存在，疾病肯定会发生"},{"k":"B","t":"有条件存在，疾病肯定会发生"},{"k":"C","t":"没有病因存在，疾病肯定不会发生"},{"k":"D","t":"有诱因存在，疾病肯定会发生"},{"k":"E","t":"同时具备条件和诱因才能引起疾病发生"}],"ans":["C"],"note":"","freq":2},{"id":"1-14","ch":"第二章疾病概论","num":14,"type":"单选","stem":"临床脑死亡的首要指标","opts":[{"k":"A","t":"自主心跳停止"},{"k":"B","t":"自主呼吸停止"},{"k":"C","t":"自主心跳、呼吸停止"},{"k":"D","t":"瞳孔对光反射消失"},{"k":"E","t":"不可逆昏迷"}],"ans":["B"],"note":"","freq":1},{"id":"1-15","ch":"第二章疾病概论","num":15,"type":"单选","stem":"死亡的概念是指","opts":[{"k":"A","t":"有机体解体的过程"},{"k":"B","t":"各组织和细胞全部坏死"},{"k":"C","t":"机体作为一个整体的功能永久性停止"},{"k":"D","t":"心跳、呼吸停止，反射消失"},{"k":"E","t":"各器官、组织和细胞代谢全部停止"}],"ans":["C"],"note":"","freq":1},{"id":"1-16","ch":"第二章疾病概论","num":16,"type":"单选","stem":"不属于生物性致病因素的是","opts":[{"k":"A","t":"病毒"},{"k":"B","t":"细菌"},{"k":"C","t":"四氯化碳"},{"k":"D","t":"立克次体"},{"k":"E","t":"疟原虫"}],"ans":["C"],"note":"","freq":1},{"id":"1-17","ch":"第二章疾病概论","num":17,"type":"单选","stem":"血友病的致病因素是","opts":[{"k":"A","t":"生物性因素"},{"k":"B","t":"免疫性因素"},{"k":"C","t":"先天性因素"},{"k":"D","t":"营养性因素"},{"k":"E","t":"遗传性因素"}],"ans":["E"],"note":"","freq":2},{"id":"1-18","ch":"第二章疾病概论","num":18,"type":"单选","stem":"发病学研究的内容是","opts":[{"k":"A","t":"疾病发生的原因"},{"k":"B","t":"疾病发生的条件"},{"k":"C","t":"疾病发生的诱因"},{"k":"D","t":"疾病发生发展和转归的规律"},{"k":"E","t":"自稳调节紊乱的变化"}],"ans":["D"],"note":"","freq":2},{"id":"1-19","ch":"第二章疾病概论","num":19,"type":"单选","stem":"疾病的发展取决于","opts":[{"k":"A","t":"病因的数量与强度"},{"k":"B","t":"存在的诱因"},{"k":"C","t":"机体自稳调节的能力"},{"k":"D","t":"损伤与抗损伤力量的对比"},{"k":"E","t":"机体的抵抗力"}],"ans":["D"],"note":"","freq":2},{"id":"1-20","ch":"第二章疾病概论","num":20,"type":"单选","stem":"病理生理学的主要任务是：","opts":[{"k":"A","t":"揭示疾病的机制和规律"},{"k":"B","t":"鉴定疾病的类型"},{"k":"C","t":"研究疾病的代偿功能"},{"k":"D","t":"描述疾病的表现"},{"k":"E","t":"诊断和治疗疾病"}],"ans":["A"],"note":"","freq":1},{"id":"1-21","ch":"第二章疾病概论","num":21,"type":"单选","stem":"病理过程的特点包括：","opts":[{"k":"A","t":"不同疾病中可存在共同的病理过程"},{"k":"B","t":"只代表疾病发展过程的最后阶段"},{"k":"C","t":"病理过程中不一定都有成套的、共同的机能、代谢和形态的变化"},{"k":"D","t":"一种病理过程只能由一种特定的原因引起"},{"k":"E","t":"是疾病发展过程中的一般规律"}],"ans":["A"],"note":"","freq":1},{"id":"1-22","ch":"第二章疾病概论","num":22,"type":"单选","stem":"下列哪项不属于基本病理过程？","opts":[{"k":"A","t":"发热"},{"k":"B","t":"创伤性休克"},{"k":"C","t":"呼吸衰竭"},{"k":"D","t":"混合性酸碱平衡紊乱"},{"k":"E","t":"水肿"}],"ans":["C"],"note":"","freq":1},{"id":"1-23","ch":"第二章疾病概论","num":23,"type":"单选","stem":"疾病发生发展中的普遍规律包括：","opts":[{"k":"A","t":"酸碱平衡的调节"},{"k":"B","t":"损伤与抗损伤反应"},{"k":"C","t":"炎症和抗炎反应"},{"k":"D","t":"健康和疾病"},{"k":"E","t":"分子和细胞改变"}],"ans":["B"],"note":"","freq":1},{"id":"1-24","ch":"第二章疾病概论","num":24,"type":"单选","stem":"能够加强病因作用或促进疾病发生的因素为：","opts":[{"k":"A","t":"疾病的原因"},{"k":"B","t":"疾病的内因"},{"k":"C","t":"疾病的外因"},{"k":"D","t":"疾病的诱因"},{"k":"E","t":"疾病的条件"}],"ans":["D"],"note":"","freq":1},{"id":"1-25","ch":"第二章疾病概论","num":25,"type":"单选","stem":"疾病发生必不可少的因素是：","opts":[{"k":"A","t":"疾病的条件"},{"k":"B","t":"疾病的原因"},{"k":"C","t":"疾病的危险因素"},{"k":"D","t":"疾病的诱因"},{"k":"E","t":"疾病的外因"}],"ans":["B"],"note":"","freq":1},{"id":"1-26","ch":"第二章疾病概论","num":26,"type":"单选","stem":"疾病发生的基本机制不包括：","opts":[{"k":"A","t":"体液机制"},{"k":"B","t":"神经机制"},{"k":"C","t":"组织细胞机制"},{"k":"D","t":"分子机制"},{"k":"E","t":"内分泌机制"}],"ans":["E"],"note":"","freq":1},{"id":"1-27","ch":"第二章疾病概论","num":27,"type":"单选","stem":"植物人状态是指：","opts":[{"k":"A","t":"心跳停止"},{"k":"B","t":"自主呼吸停止"},{"k":"C","t":"颅神经反射消失"},{"k":"D","t":"持续昏迷和大脑无反应性"},{"k":"E","t":"瞳孔散大固定"}],"ans":["D"],"note":"","freq":1},{"id":"1-28","ch":"第二章疾病概论","num":28,"type":"单选","stem":"不完全康复是指：","opts":[{"k":"A","t":"致病因素已经消除或不起作用"},{"k":"B","t":"疾病时发生的损伤性变化完全消失"},{"k":"C","t":"劳动能力恢复正常"},{"k":"D","t":"机体的自稳态恢复正常"},{"k":"E","t":"疾病时损伤性变化得到控制，基本病理变化尚未完全消失"}],"ans":["E"],"note":"","freq":1},{"id":"1-29","ch":"第二章疾病概论","num":29,"type":"单选","stem":"病因学研究的内容包括","opts":[{"k":"A","t":"疾病的原因与条件"},{"k":"B","t":"疾病的转归规律"},{"k":"C","t":"自稳调节紊乱的规律"},{"k":"D","t":"因果转化规律"},{"k":"E","t":"致病微生物的生物特性"}],"ans":["A"],"note":"","freq":1},{"id":"1-30","ch":"第二章疾病概论","num":30,"type":"单选","stem":"决定疾病特异性的因素是","opts":[{"k":"A","t":"疾病的诱发因素"},{"k":"B","t":"疾病发生的原因"},{"k":"C","t":"疾病的危险因素"},{"k":"D","t":"疾病发生的条件"},{"k":"E","t":"疾病的发展规律"}],"ans":["B"],"note":"","freq":1},{"id":"1-31","ch":"第二章疾病概论","num":31,"type":"单选","stem":"亚健康状态的特征不包括","opts":[{"k":"A","t":"不可逆地向疾病方向转化"},{"k":"B","t":"生理功能低下，但未达到疾病诊断标准"},{"k":"C","t":"与生活及工作方式不科学破坏人体正常的平衡有关"},{"k":"D","t":"介于健康与疾病之间的状态"},{"k":"E","t":"中年人是高发人群"}],"ans":["A"],"note":"","freq":1},{"id":"1-32","ch":"第二章疾病概论","num":32,"type":"单选","stem":"损害胎儿发育的病因称为","opts":[{"k":"A","t":"生物因素"},{"k":"B","t":"遗传因素"},{"k":"C","t":"先天因素"},{"k":"D","t":"营养因素"},{"k":"E","t":"免疫因素"}],"ans":["C"],"note":"","freq":1},{"id":"1-33","ch":"第二章疾病概论","num":33,"type":"单选","stem":"AIDS致病属于下列哪种因素","opts":[{"k":"A","t":"生物因素"},{"k":"B","t":"遗传因素"},{"k":"C","t":"先天因素"},{"k":"D","t":"营养因素"},{"k":"E","t":"免疫因素"}],"ans":["E"],"note":"本题按原资料参考答案E记录，题干与参考答案可能存在争议，请结合教材核对。","freq":1},{"id":"1-34","ch":"第二章疾病概论","num":34,"type":"单选","stem":"发病学研究的内容包括","opts":[{"k":"A","t":"疾病发生的原因"},{"k":"B","t":"疾病发生的诱因"},{"k":"C","t":"疾病发生的条件"},{"k":"D","t":"疾病发生的危险因素"},{"k":"E","t":"疾病发生发展的规律和机制"}],"ans":["E"],"note":"","freq":1},{"id":"1-35","ch":"第二章疾病概论","num":35,"type":"单选","stem":"对疾病发生发展过程中损伤与抗损伤规律的描述不正确的是","opts":[{"k":"A","t":"损伤与抗损伤之间无严格界限"},{"k":"B","t":"损伤与抗损伤作用贯穿始终且不断变化"},{"k":"C","t":"损伤与抗损伤作用常常同时出现"},{"k":"D","t":"损伤与抗损伤作用之间不可相互转化"},{"k":"E","t":"损伤与抗损伤反应的斗争及力量对比影响疾病的发展方向和转归"}],"ans":["D"],"note":"","freq":1},{"id":"1-36","ch":"第二章疾病概论","num":36,"type":"单选","stem":"下述哪项不符合完全康复的标准","opts":[{"k":"A","t":"疾病所致的损伤完全消失"},{"k":"B","t":"患病机体的功能、代谢及形态完全恢复正常"},{"k":"C","t":"可能使机体获得特异性免疫力"},{"k":"D","t":"机体的自稳调节恢复正常"},{"k":"E","t":"遗留有基本病理变化，通过机体的代偿可维持内环境相对稳定"}],"ans":["E"],"note":"","freq":1},{"id":"1-37","ch":"第二章疾病概论","num":37,"type":"单选","stem":"下列不属于生物因素的是","opts":[{"k":"A","t":"病毒"},{"k":"B","t":"蛇毒"},{"k":"C","t":"细菌"},{"k":"D","t":"真菌"},{"k":"E","t":"寄生虫"}],"ans":["B"],"note":"","freq":1},{"id":"1-38","ch":"第二章疾病概论","num":38,"type":"单选","stem":"下列哪项不作为脑死亡的标准","opts":[{"k":"A","t":"心跳停止"},{"k":"B","t":"自主呼吸停止"},{"k":"C","t":"脑干神经反射消失"},{"k":"D","t":"不可逆性深昏迷"},{"k":"E","t":"脑电波消失"}],"ans":["A"],"note":"","freq":1},{"id":"1-39","ch":"第二章疾病概论","num":39,"type":"单选","stem":"对疾病的描述中下列哪一项正确","opts":[{"k":"A","t":"疾病就是“不舒服”"},{"k":"B","t":"疾病是上帝的惩罚"},{"k":"C","t":"疾病是病毒侵入机体的结果"},{"k":"D","t":"疾病是机体内稳态调节紊乱而导致的异常生命活动过程"},{"k":"E","t":"疾病就是机体遭遇外界因素伤害的结果"}],"ans":["D"],"note":"","freq":1},{"id":"1-40","ch":"第二章疾病概论","num":40,"type":"单选","stem":"下列对疾病条件的叙述哪一项是错误的","opts":[{"k":"A","t":"条件可影响病因对机体的作用"},{"k":"B","t":"条件是促进疾病发展的因素"},{"k":"C","t":"年龄和性别也可作为某些疾病发病的条件"},{"k":"D","t":"条件是能促进或减缓疾病发生的某种机体状态或自然环境"},{"k":"E","t":"条件本身不引起疾病"}],"ans":["B"],"note":"","freq":1},{"id":"1-41","ch":"第二章疾病概论","num":41,"type":"单选","stem":"我国临床死亡诊断采用的诊断标准是","opts":[{"k":"A","t":"脑死亡"},{"k":"B","t":"瞳孔散大"},{"k":"C","t":"脑血液循环完全停止"},{"k":"D","t":"呼吸、心跳停止"},{"k":"E","t":"脑电波消失"}],"ans":["A"],"note":"保留原资料的历史题干与参考答案，不代表现行临床诊断规范。","freq":1},{"id":"1-42","ch":"第二章疾病概论","num":42,"type":"单选","stem":"下列哪项因素不属于疾病发生的原因","opts":[{"k":"A","t":"基因突变"},{"k":"B","t":"染色体畸变"},{"k":"C","t":"药物中毒"},{"k":"D","t":"年龄和性别因素"},{"k":"E","t":"心理压力过大"}],"ans":["D"],"note":"","freq":1},{"id":"1-43","ch":"第二章疾病概论","num":43,"type":"单选","stem":"疾病发生基本机制不包括","opts":[{"k":"A","t":"分子机制"},{"k":"B","t":"细胞机制"},{"k":"C","t":"体液机制"},{"k":"D","t":"代偿适应机制"},{"k":"E","t":"神经机制"}],"ans":["D"],"note":"","freq":1},{"id":"1-44","ch":"第二章疾病概论","num":44,"type":"单选","stem":"唇裂的病因属于","opts":[{"k":"A","t":"生物因素"},{"k":"B","t":"理化因素"},{"k":"C","t":"遗传因素"},{"k":"D","t":"先天因素"},{"k":"E","t":"免疫因素"}],"ans":["D"],"note":"","freq":1},{"id":"1-45","ch":"第二章疾病概论","num":45,"type":"单选","stem":"对生物因素的描述下列哪项是不正确的","opts":[{"k":"A","t":"病原体必须与机体相互作用才能引起疾病"},{"k":"B","t":"病原体作用与机体后，可引起机体的免疫反应"},{"k":"C","t":"病原体致病性取决于病原体侵入的数量、毒性及侵袭力"},{"k":"D","t":"致病微生物均可引起机体发热"},{"k":"E","t":"病原体作用与机体后，自身可发生变异"}],"ans":["D"],"note":"","freq":1},{"id":"1-46","ch":"第二章疾病概论","num":46,"type":"单选","stem":"系统性红斑狼疮的病因属于","opts":[{"k":"A","t":"生物因素"},{"k":"B","t":"理化因素"},{"k":"C","t":"遗传因素"},{"k":"D","t":"先天因素"},{"k":"E","t":"免疫因素"}],"ans":["E"],"note":"","freq":1},{"id":"1-47","ch":"第二章疾病概论","num":47,"type":"多选","stem":"生物性致病因素作用于机体有以下特点","opts":[{"k":"A","t":"必须与机体相互作用才能引起疾病"},{"k":"B","t":"有一定的侵入门户"},{"k":"C","t":"没有潜伏期"},{"k":"D","t":"作用于机体后自身也发生了改变"},{"k":"E","t":"必须在体内繁殖"}],"ans":["A","B","D"],"note":"","freq":1},{"id":"1-48","ch":"第二章疾病概论","num":48,"type":"多选","stem":"疾病发生发展的规律包括","opts":[{"k":"A","t":"损伤与抗损伤"},{"k":"B","t":"因果交替"},{"k":"C","t":"康复"},{"k":"D","t":"局部与整体"},{"k":"E","t":"死亡"}],"ans":["A","B","D"],"note":"","freq":1},{"id":"1-49","ch":"第二章疾病概论","num":49,"type":"多选","stem":"损伤与抗损伤反应可以表现为","opts":[{"k":"A","t":"两者相互对立"},{"k":"B","t":"贯穿于整个疾病过程中"},{"k":"C","t":"影响疾病的转归"},{"k":"D","t":"两者可以相互转化"},{"k":"E","t":"两者互为因果"}],"ans":["A","B","C","D"],"note":"","freq":1},{"id":"1-50","ch":"第二章疾病概论","num":50,"type":"多选","stem":"脑死亡的判断标准包括","opts":[{"k":"A","t":"心跳停止"},{"k":"B","t":"自主呼吸停止"},{"k":"C","t":"瞳孔散大或固定"},{"k":"D","t":"脑电波消失"},{"k":"E","t":"不可逆昏迷和大脑无反应性"}],"ans":["B","C","D","E"],"note":"","freq":1},{"id":"1-51","ch":"第二章疾病概论","num":51,"type":"单选","stem":"能够引起疾病并决定该疾病特异性的因素称为","opts":[{"k":"A","t":"疾病的原因"},{"k":"B","t":"疾病的诱因"},{"k":"C","t":"疾病的条件"},{"k":"D","t":"疾病的外因"},{"k":"E","t":"疾病的危险因素"}],"ans":["A"],"note":"","freq":1},{"id":"1-52","ch":"第二章疾病概论","num":52,"type":"单选","stem":"能够促进疾病发生的因素称为","opts":[{"k":"A","t":"疾病的原因"},{"k":"B","t":"疾病的诱因"},{"k":"C","t":"疾病的条件"},{"k":"D","t":"疾病的外因"},{"k":"E","t":"疾病的危险因素"}],"ans":["B"],"note":"","freq":1},{"id":"1-53","ch":"第二章疾病概论","num":53,"type":"单选","stem":"能够促进或阻碍疾病发生的因素称为","opts":[{"k":"A","t":"疾病的原因"},{"k":"B","t":"疾病的诱因"},{"k":"C","t":"疾病的条件"},{"k":"D","t":"疾病的外因"},{"k":"E","t":"疾病的危险因素"}],"ans":["C"],"note":"","freq":1},{"id":"1-54","ch":"第二章疾病概论","num":54,"type":"单选","stem":"与疾病的发生密切相关的因素称为","opts":[{"k":"A","t":"疾病的原因"},{"k":"B","t":"疾病的诱因"},{"k":"C","t":"疾病的条件"},{"k":"D","t":"疾病的外因"},{"k":"E","t":"疾病的危险因素"}],"ans":["E"],"note":"","freq":1},{"id":"1-55","ch":"第二章疾病概论","num":55,"type":"单选","stem":"病原微生物属于","opts":[{"k":"A","t":"生物性致病因素"},{"k":"B","t":"先天性致病因素"},{"k":"C","t":"理化性致病因素"},{"k":"D","t":"免疫性致病因素"},{"k":"E","t":"遗传性致病因素"}],"ans":["A"],"note":"","freq":1},{"id":"1-56","ch":"第二章疾病概论","num":56,"type":"单选","stem":"过敏反应属于","opts":[{"k":"A","t":"生物性致病因素"},{"k":"B","t":"先天性致病因素"},{"k":"C","t":"理化性致病因素"},{"k":"D","t":"免疫性致病因素"},{"k":"E","t":"遗传性致病因素"}],"ans":["D"],"note":"","freq":1},{"id":"1-57","ch":"第二章疾病概论","num":57,"type":"单选","stem":"损害胎儿生长发育的因素称为","opts":[{"k":"A","t":"生物性致病因素"},{"k":"B","t":"先天性致病因素"},{"k":"C","t":"理化性致病因素"},{"k":"D","t":"免疫性致病因素"},{"k":"E","t":"遗传性致病因素"}],"ans":["B"],"note":"","freq":1},{"id":"1-58","ch":"第二章疾病概论","num":58,"type":"单选","stem":"染色体畸变属于","opts":[{"k":"A","t":"生物性致病因素"},{"k":"B","t":"先天性致病因素"},{"k":"C","t":"理化性致病因素"},{"k":"D","t":"免疫性致病因素"},{"k":"E","t":"遗传性致病因素"}],"ans":["E"],"note":"","freq":1},{"id":"1-59","ch":"第二章疾病概论","num":59,"type":"单选","stem":"基因突变属于","opts":[{"k":"A","t":"生物性致病因素"},{"k":"B","t":"先天性致病因素"},{"k":"C","t":"理化性致病因素"},{"k":"D","t":"免疫性致病因素"},{"k":"E","t":"遗传性致病因素"}],"ans":["E"],"note":"","freq":1},{"id":"1-60","ch":"第二章疾病概论","num":60,"type":"单选","stem":"胱氨酸尿症属于","opts":[{"k":"A","t":"酶缺陷所致疾病"},{"k":"B","t":"细胞蛋白缺陷所致疾病"},{"k":"C","t":"受体缺陷所致疾病"},{"k":"D","t":"膜转运障碍所致疾病"},{"k":"E","t":"基因突变所致疾病"}],"ans":["D"],"note":"","freq":1},{"id":"1-61","ch":"第二章疾病概论","num":61,"type":"单选","stem":"Ⅰ型糖原沉积症属于","opts":[{"k":"A","t":"酶缺陷所致疾病"},{"k":"B","t":"细胞蛋白缺陷所致疾病"},{"k":"C","t":"受体缺陷所致疾病"},{"k":"D","t":"膜转运障碍所致疾病"},{"k":"E","t":"基因突变所致疾病"}],"ans":["A"],"note":"","freq":1},{"id":"1-62","ch":"第二章疾病概论","num":62,"type":"单选","stem":"镰刀细胞性贫血属于","opts":[{"k":"A","t":"酶缺陷所致疾病"},{"k":"B","t":"细胞蛋白缺陷所致疾病"},{"k":"C","t":"受体缺陷所致疾病"},{"k":"D","t":"膜转运障碍所致疾病"},{"k":"E","t":"基因突变所致疾病"}],"ans":["B"],"note":"","freq":1},{"id":"1-63","ch":"第二章疾病概论","num":63,"type":"单选","stem":"重症肌无力属于","opts":[{"k":"A","t":"酶缺陷所致疾病"},{"k":"B","t":"细胞蛋白缺陷所致疾病"},{"k":"C","t":"受体缺陷所致疾病"},{"k":"D","t":"膜转运障碍所致疾病"},{"k":"E","t":"基因突变所致疾病"}],"ans":["C"],"note":"","freq":1},{"id":"1-64","ch":"第二章疾病概论","num":64,"type":"单选","stem":"干酪性肺炎的原因","opts":[{"k":"A","t":"遗传性因素"},{"k":"B","t":"结核杆菌"},{"k":"C","t":"营养缺乏"},{"k":"D","t":"代谢因素"},{"k":"E","t":"食道静脉曲张破裂出血"}],"ans":["B"],"note":"","freq":1},{"id":"1-65","ch":"第二章疾病概论","num":65,"type":"单选","stem":"干酪性肺炎的条件","opts":[{"k":"A","t":"遗传性因素"},{"k":"B","t":"结核杆菌"},{"k":"C","t":"营养缺乏"},{"k":"D","t":"代谢因素"},{"k":"E","t":"食道静脉曲张破裂出血"}],"ans":["C"],"note":"","freq":1},{"id":"1-66","ch":"第二章疾病概论","num":66,"type":"单选","stem":"肝性脑病的诱因","opts":[{"k":"A","t":"遗传性因素"},{"k":"B","t":"结核杆菌"},{"k":"C","t":"营养缺乏"},{"k":"D","t":"代谢因素"},{"k":"E","t":"食道静脉曲张破裂出血"}],"ans":["E"],"note":"","freq":1},{"id":"2-1","ch":"第六章应激","num":1,"type":"单选","stem":"应激是指机体对应激原刺激的一种","opts":[{"k":"A","t":"特异性全身反应"},{"k":"B","t":"非特异性全身反应"},{"k":"C","t":"代偿性反应"},{"k":"D","t":"病理性反应"},{"k":"E","t":"生理性反应"}],"ans":["B"],"note":"","freq":2},{"id":"2-2","ch":"第六章应激","num":2,"type":"单选","stem":"全身适应综合征警觉期起主要作用的是","opts":[{"k":"A","t":"儿茶酚胺"},{"k":"B","t":"糖皮质激素"},{"k":"C","t":"醛固酮"},{"k":"D","t":"β-内啡肽"},{"k":"E","t":"胰岛素"}],"ans":["A"],"note":"","freq":1},{"id":"2-3","ch":"第六章应激","num":3,"type":"单选","stem":"各种不同应激原所引起的应激是","opts":[{"k":"A","t":"几乎相同的特异性全身性反应"},{"k":"B","t":"几乎相同的非特异性全身性反应"},{"k":"C","t":"决定于应激原的特异性反应"},{"k":"D","t":"完全不相同的特异性全身性反应"},{"k":"E","t":"完全不相同的非特异性全身性反应"}],"ans":["B"],"note":"","freq":2},{"id":"2-4","ch":"第六章应激","num":4,"type":"单选","stem":"应激时最重要的反应是","opts":[{"k":"A","t":"去甲肾上腺素，肾上腺素分泌增多"},{"k":"B","t":"胰高血糖素分泌增多"},{"k":"C","t":"糖皮质激素分泌增多"},{"k":"D","t":"β-内啡肽分泌增多"},{"k":"E","t":"生长素分泌增多"}],"ans":["C"],"note":"","freq":1},{"id":"2-5","ch":"第六章应激","num":5,"type":"单选","stem":"应激时儿茶酚胺释放增多对机体有利的影响是","opts":[{"k":"A","t":"心率减慢"},{"k":"B","t":"腹腔内脏血管扩张"},{"k":"C","t":"支气管收缩，口径变小"},{"k":"D","t":"促进糖原合成"},{"k":"E","t":"血液重新分布"}],"ans":["E"],"note":"","freq":2},{"id":"2-6","ch":"第六章应激","num":6,"type":"单选","stem":"交感一肾上腺髓质系统的中枢位点位于","opts":[{"k":"A","t":"下丘脑"},{"k":"B","t":"蓝斑"},{"k":"C","t":"杏仁体"},{"k":"D","t":"室旁核"},{"k":"E","t":"延髓"}],"ans":["B"],"note":"","freq":1},{"id":"2-7","ch":"第六章应激","num":7,"type":"单选","stem":"下丘脑一垂体一肾上腺皮质轴的中枢位点位于","opts":[{"k":"A","t":"蓝斑"},{"k":"B","t":"黑质"},{"k":"C","t":"海马"},{"k":"D","t":"室旁核"},{"k":"E","t":"杏仁体"}],"ans":["D"],"note":"","freq":1},{"id":"2-8","ch":"第六章应激","num":8,"type":"单选","stem":"应激时下列哪一种激素分泌减少","opts":[{"k":"A","t":"抗利尿激素"},{"k":"B","t":"胰岛素"},{"k":"C","t":"胰高血糖素"},{"k":"D","t":"催乳素"},{"k":"E","t":"内啡肽"}],"ans":["B"],"note":"","freq":2},{"id":"2-9","ch":"第六章应激","num":9,"type":"单选","stem":"应激时内啡肽升高与下列哪种物质相关","opts":[{"k":"A","t":"生长素"},{"k":"B","t":"胰岛素"},{"k":"C","t":"肾上腺素"},{"k":"D","t":"去甲肾上腺素"},{"k":"E","t":"促肾上腺皮质激素释放激素."}],"ans":["E"],"note":"","freq":2},{"id":"2-10","ch":"第六章应激","num":10,"type":"单选","stem":"应激时，急性期反应蛋白不具有下列哪一项功能","opts":[{"k":"A","t":"抗出血"},{"k":"B","t":"修复受损蛋白质"},{"k":"C","t":"抗感染"},{"k":"D","t":"抑制蛋白酶作用"},{"k":"E","t":"清除异物和坏死组织"}],"ans":["B"],"note":"","freq":2},{"id":"2-11","ch":"第六章应激","num":11,"type":"单选","stem":"关于热休克蛋白的描述哪一项不正确","opts":[{"k":"A","t":"属非分泌型蛋白"},{"k":"B","t":"最初从经受热应激的果蝇唾液腺中发现"},{"k":"C","t":"大多数是结构蛋白"},{"k":"D","t":"广泛存在于从原核到真核细胞的多种生物体中"},{"k":"E","t":"基本结构为C端的一个ATP酶结构域和N端的一个基质识别结构域"}],"ans":["E"],"note":"","freq":1},{"id":"2-12","ch":"第六章应激","num":12,"type":"单选","stem":"应激时急性期反应蛋白（AP）不包括下列哪一类蛋白","opts":[{"k":"A","t":"C-反应蛋白"},{"k":"B","t":"参与激肽生成的蛋白"},{"k":"C","t":"属于补体成分的蛋白"},{"k":"D","t":"参与铁转运的蛋白"},{"k":"E","t":"纤维蛋白原"}],"ans":["B"],"note":"","freq":1},{"id":"2-13","ch":"第六章应激","num":13,"type":"单选","stem":"与应激无关的疾病是","opts":[{"k":"A","t":"原发性高血压"},{"k":"B","t":"支气管哮喘"},{"k":"C","t":"冠心病"},{"k":"D","t":"白化病"},{"k":"E","t":"溃疡性结肠炎"}],"ans":["D"],"note":"","freq":1},{"id":"2-14","ch":"第六章应激","num":14,"type":"单选","stem":"情绪心理应激与原发性高血压发病相关的主要机制是","opts":[{"k":"A","t":"交感-肾上腺髓质系统兴奋"},{"k":"B","t":"血胆固醇升高，血液黏度增高"},{"k":"C","t":"激活肾素-血管紧张素-醛固酮系统"},{"k":"D","t":"使心肌发生向心性肥大"},{"k":"E","t":"肾血管收缩，水钠潴留"}],"ans":["A"],"note":"","freq":2},{"id":"2-15","ch":"第六章应激","num":15,"type":"单选","stem":"应激时心血管系统的基本变化为","opts":[{"k":"A","t":"心输出量增加，血压升高"},{"k":"B","t":"心率减慢，心肌收缩力减弱"},{"k":"C","t":"总外周阻力增加"},{"k":"D","t":"冠状动脉血流量减少"},{"k":"E","t":"心室纤颤的阈值升高"}],"ans":["A"],"note":"","freq":1},{"id":"2-16","ch":"第六章应激","num":16,"type":"单选","stem":"应激时交感-肾上腺髓质强烈兴奋可致","opts":[{"k":"A","t":"胃肠血流量增加"},{"k":"B","t":"胃黏液蛋白分泌增加"},{"k":"C","t":"胃持续舒张"},{"k":"D","t":"胃肠黏膜糜烂、溃疡、出血"},{"k":"E","t":"肠平滑肌舒张"}],"ans":["D"],"note":"","freq":2},{"id":"2-17","ch":"第六章应激","num":17,"type":"单选","stem":"应激时泌尿系统的主要变化有","opts":[{"k":"A","t":"尿量增多，尿比重降低"},{"k":"B","t":"血尿、蛋白尿"},{"k":"C","t":"肾小球滤过率降低"},{"k":"D","t":"水钠排泄增多"},{"k":"E","t":"肾小球泌H功能明显降低"}],"ans":["C"],"note":"","freq":1},{"id":"2-18","ch":"第六章应激","num":18,"type":"单选","stem":"应激时，下列哪一种内分泌腺的变化最为明显？","opts":[{"k":"A","t":"甲状腺"},{"k":"B","t":"甲状旁腺"},{"k":"C","t":"胰腺"},{"k":"D","t":"肾上腺"},{"k":"E","t":"性腺"}],"ans":["D"],"note":"","freq":2},{"id":"2-19","ch":"第六章应激","num":19,"type":"单选","stem":"下列哪种蛋白为负急性期反应蛋白","opts":[{"k":"A","t":"纤维蛋白原"},{"k":"B","t":"铜蓝蛋白"},{"k":"C","t":"胶原蛋白"},{"k":"D","t":"前白蛋白"},{"k":"E","t":"C反应蛋白"}],"ans":["D"],"note":"","freq":1},{"id":"2-20","ch":"第六章应激","num":20,"type":"单选","stem":"应激时，下列哪种激素的增多具有稳定溶酶体膜的功能","opts":[{"k":"A","t":"儿茶酚胺"},{"k":"B","t":"糖皮质激素"},{"k":"C","t":"胰岛素"},{"k":"D","t":"甲状腺素"},{"k":"E","t":"胰高血糖素"}],"ans":["B"],"note":"","freq":2},{"id":"2-21","ch":"第六章应激","num":21,"type":"单选","stem":"应激时，下列哪种激素的增多与患者的食欲减退有关","opts":[{"k":"A","t":"儿茶酚胺"},{"k":"B","t":"糖皮质激素"},{"k":"C","t":"促肾上腺皮质激素释放激素"},{"k":"D","t":"甲状腺素"},{"k":"E","t":"胰高血糖素"}],"ans":["C"],"note":"","freq":1},{"id":"2-22","ch":"第六章应激","num":22,"type":"单选","stem":"应激时最核心的神经内分泌反应是","opts":[{"k":"A","t":"ACTH的分泌增加"},{"k":"B","t":"GC的分泌增加"},{"k":"C","t":"CHR的分泌增加"},{"k":"D","t":"儿茶酚胺分泌增加"},{"k":"E","t":"急性期反应蛋白增加"}],"ans":["C"],"note":"","freq":1},{"id":"2-23","ch":"第六章应激","num":23,"type":"单选","stem":"应激时，交感-肾上腺髓质系统兴奋对机体产生的不利影响是","opts":[{"k":"A","t":"抑制甲状腺轴"},{"k":"B","t":"升高血糖"},{"k":"C","t":"促进蛋白质糖异生"},{"k":"D","t":"生长缓慢"},{"k":"E","t":"胃肠道缺血"}],"ans":["E"],"note":"","freq":1},{"id":"2-24","ch":"第六章应激","num":24,"type":"单选","stem":"应激是指机体在受到各种内外环境因素刺激时所产生的：","opts":[{"k":"A","t":"特异性反应"},{"k":"B","t":"非特异性反应"},{"k":"C","t":"生理性反应"},{"k":"D","t":"损害性反应"},{"k":"E","t":"代偿性反应"}],"ans":["B"],"note":"","freq":1},{"id":"2-25","ch":"第六章应激","num":25,"type":"单选","stem":"全身适应综合征的警觉期体内分泌增多的激素主要是：","opts":[{"k":"A","t":"垂体加压素"},{"k":"B","t":"甲状腺素"},{"k":"C","t":"胰高血糖素"},{"k":"D","t":"儿茶酚胺"},{"k":"E","t":"胰岛素"}],"ans":["D"],"note":"","freq":1},{"id":"2-26","ch":"第六章应激","num":26,"type":"单选","stem":"全身适应综合征的抵抗期内起主要作用的激素是：","opts":[{"k":"A","t":"胰岛素"},{"k":"B","t":"胰高血糖素"},{"k":"C","t":"垂体加压素"},{"k":"D","t":"醛固酮"},{"k":"E","t":"肾上腺皮质激素"}],"ans":["E"],"note":"","freq":1},{"id":"2-27","ch":"第六章应激","num":27,"type":"单选","stem":"全身适应综合征时，体内持续升高的激素是：","opts":[{"k":"A","t":"胰岛素"},{"k":"B","t":"生长激素"},{"k":"C","t":"肾上腺皮质激素"},{"k":"D","t":"促性腺激素释放激素"},{"k":"E","t":"促甲状腺激素释放激素"}],"ans":["C"],"note":"","freq":1},{"id":"2-28","ch":"第六章应激","num":28,"type":"单选","stem":"蓝斑一交感一肾上腺髓质轴的基本组成单元是：","opts":[{"k":"A","t":"室旁核"},{"k":"B","t":"腺垂体"},{"k":"C","t":"肾上腺皮质"},{"k":"D","t":"脊髓运动神经元"},{"k":"E","t":"蓝斑去甲肾上腺素能神经元"}],"ans":["E"],"note":"","freq":1},{"id":"2-29","ch":"第六章应激","num":29,"type":"单选","stem":"持续强烈应激时交感一肾上腺髓质兴奋对机体明显有利的是：","opts":[{"k":"A","t":"腹腔器官小血管收缩"},{"k":"B","t":"皮肤小血管收缩"},{"k":"C","t":"冠脉扩张"},{"k":"D","t":"纤维蛋白原增加"},{"k":"E","t":"血液黏度增加"}],"ans":["C"],"note":"","freq":1},{"id":"2-30","ch":"第六章应激","num":30,"type":"单选","stem":"应激时最核心的神经内分泌反应是：","opts":[{"k":"A","t":"释放肾上腺素（E）"},{"k":"B","t":"释放去甲肾上腺素（NE）"},{"k":"C","t":"释放促肾上腺皮质激素释放激素（CRH）"},{"k":"D","t":"释放促肾上腺皮质激素（ACTH）"},{"k":"E","t":"释放糖皮质激素（GC）"}],"ans":["C"],"note":"","freq":1},{"id":"2-31","ch":"第六章应激","num":31,"type":"单选","stem":"应激时交感一肾上腺髓质系统兴奋，既有防御意义又有不利意义的是：","opts":[{"k":"A","t":"心收缩力加强"},{"k":"B","t":"血糖增加"},{"k":"C","t":"心脑血流增加"},{"k":"D","t":"支气管扩张"},{"k":"E","t":"儿茶酚胺增多"}],"ans":["E"],"note":"","freq":1},{"id":"2-32","ch":"第六章应激","num":32,"type":"单选","stem":"应激时交感-肾上腺髓质系统兴奋所产生的对机体不利的反应是：","opts":[{"k":"A","t":"组织缺血"},{"k":"B","t":"血黏度增高"},{"k":"C","t":"促进脂质过氧化物生成"},{"k":"D","t":"能量消耗过多"},{"k":"E","t":"以上都是"}],"ans":["E"],"note":"","freq":1},{"id":"2-33","ch":"第六章应激","num":33,"type":"单选","stem":"应激时交感-肾上腺髓质系统兴奋所产生的防御性反应不包括：","opts":[{"k":"A","t":"心率增快、心肌收缩力增强"},{"k":"B","t":"支气管扩张加强通气"},{"k":"C","t":"促进糖原分解使血糖升高"},{"k":"D","t":"血液重分布"},{"k":"E","t":"血黏度增高"}],"ans":["E"],"note":"","freq":1},{"id":"2-34","ch":"第六章应激","num":34,"type":"单选","stem":"应激时蓝斑-交感-肾上腺髓质系统的外周效应是：","opts":[{"k":"A","t":"CRH释放"},{"k":"B","t":"血浆肾上腺素、去甲肾上腺素浓度迅速升高"},{"k":"C","t":"糖皮质激素分泌增加"},{"k":"D","t":"ACTH释放"},{"k":"E","t":"引起兴奋、警觉、紧张、焦虑等情绪反应"}],"ans":["B"],"note":"","freq":1},{"id":"2-35","ch":"第六章应激","num":35,"type":"单选","stem":"应激反应中对免疫起抑制作用的最主要激素是：","opts":[{"k":"A","t":"肾上腺素"},{"k":"B","t":"去甲肾上腺素"},{"k":"C","t":"糖皮质激素"},{"k":"D","t":"胰岛素"},{"k":"E","t":"生长激素"}],"ans":["C"],"note":"","freq":1},{"id":"2-36","ch":"第六章应激","num":36,"type":"单选","stem":"应激反应中对炎症反应起抑制作用的激素：","opts":[{"k":"A","t":"肾上腺素"},{"k":"B","t":"去甲肾上腺素"},{"k":"C","t":"糖皮质激素"},{"k":"D","t":"胰岛素"},{"k":"E","t":"生长激素"}],"ans":["C"],"note":"","freq":1},{"id":"2-37","ch":"第六章应激","num":37,"type":"单选","stem":"应激时糖皮质激素的作用是：","opts":[{"k":"A","t":"降低血糖"},{"k":"B","t":"抑制蛋白分解"},{"k":"C","t":"增加溶酶体酶的外漏"},{"k":"D","t":"抑制前列腺素及缓激肽的生成和释放"},{"k":"E","t":"抑制心血管对儿茶酚胺的反应性"}],"ans":["D"],"note":"原资料答案表与后附解析存在不一致；本题按答案表记录，请结合教材核对。","freq":1},{"id":"2-38","ch":"第六章应激","num":38,"type":"单选","stem":"应激时糖皮质激素浓度升高的情况下出现其功能不足的原因是：","opts":[{"k":"A","t":"促进蛋白质合成"},{"k":"B","t":"糖皮质激素受体与糖皮质激素亲和力降低"},{"k":"C","t":"糖皮质激素受体数目增加"},{"k":"D","t":"促进巨皮质素生成"},{"k":"E","t":"维持循环系统对儿茶酚胺的反应性"}],"ans":["B"],"note":"原资料答案表与后附解析存在不一致；本题按答案表记录，请结合教材核对。","freq":1},{"id":"2-39","ch":"第六章应激","num":39,"type":"单选","stem":"应激时糖皮质激素不具有下列哪一种作用？","opts":[{"k":"A","t":"促进蛋白质分解"},{"k":"B","t":"促进脂肪动员"},{"k":"C","t":"稳定溶酶体膜"},{"k":"D","t":"降低血糖"},{"k":"E","t":"维持心血管对儿茶酚胺的反应性"}],"ans":["D"],"note":"","freq":1},{"id":"2-40","ch":"第六章应激","num":40,"type":"单选","stem":"肾上腺糖皮质激素对下列何种化学介质的生成和释放具有抑制作用？","opts":[{"k":"A","t":"前列腺素"},{"k":"B","t":"白三烯"},{"k":"C","t":"5-羟色胺"},{"k":"D","t":"缓激肽"},{"k":"E","t":"以上都是"}],"ans":["E"],"note":"","freq":1},{"id":"2-41","ch":"第六章应激","num":41,"type":"单选","stem":"急性期反应蛋白的主要来源是：","opts":[{"k":"A","t":"巨噬细胞"},{"k":"B","t":"内皮细胞"},{"k":"C","t":"肝细胞"},{"k":"D","t":"白细胞"},{"k":"E","t":"心肌细胞"}],"ans":["C"],"note":"","freq":1},{"id":"2-42","ch":"第六章应激","num":42,"type":"单选","stem":"关于热休克蛋白的错误说法是：","opts":[{"k":"A","t":"广泛存在于各种生物体内"},{"k":"B","t":"可稳定新生链折叠的中间状态"},{"k":"C","t":"帮助新生蛋白移位"},{"k":"D","t":"在进化过程中保守性很小"},{"k":"E","t":"主要在细胞内发挥作用"}],"ans":["D"],"note":"","freq":1},{"id":"2-43","ch":"第六章应激","num":43,"type":"单选","stem":"应激时HSP的基本功能是：","opts":[{"k":"A","t":"抑制蛋白酶"},{"k":"B","t":"清除异物和坏死组织"},{"k":"C","t":"抗感染、抗损伤"},{"k":"D","t":"结合、运输功能"},{"k":"E","t":"帮助蛋白质的正确折叠、移位、维持和降解"}],"ans":["E"],"note":"","freq":1},{"id":"2-44","ch":"第六章应激","num":44,"type":"单选","stem":"AP的生物学功能是：","opts":[{"k":"A","t":"促进吞噬细胞功能"},{"k":"B","t":"帮助新生蛋白质的成熟"},{"k":"C","t":"帮助新生蛋白质的移位"},{"k":"D","t":"帮助新生蛋白质的折叠"},{"k":"E","t":"帮助新生蛋白质的转运"}],"ans":["A"],"note":"","freq":1},{"id":"2-45","ch":"第六章应激","num":45,"type":"单选","stem":"可称负急性期反应蛋白的是：","opts":[{"k":"A","t":"白蛋白"},{"k":"B","t":"铜蓝蛋白"},{"k":"C","t":"纤维蛋白原"},{"k":"D","t":"结合球蛋白"},{"k":"E","t":"C-反应蛋白"}],"ans":["A"],"note":"","freq":1},{"id":"2-46","ch":"第六章应激","num":46,"type":"单选","stem":"应激时急性期反应蛋白浓度升高最显著的是：","opts":[{"k":"A","t":"纤维蛋白原"},{"k":"B","t":"铜蓝蛋白"},{"k":"C","t":"血清淀粉样A蛋白"},{"k":"D","t":"C-反应蛋白"},{"k":"E","t":"α₁-酸性糖蛋白"}],"ans":["D"],"note":"","freq":1},{"id":"2-47","ch":"第六章应激","num":47,"type":"单选","stem":"临床上作炎症和疾病活动性指标的AP是：","opts":[{"k":"A","t":"铜蓝蛋白"},{"k":"B","t":"结合珠蛋白"},{"k":"C","t":"α₂-巨球蛋白"},{"k":"D","t":"C一反应蛋白"},{"k":"E","t":"血清淀粉样A蛋白"}],"ans":["D"],"note":"","freq":1},{"id":"2-48","ch":"第六章应激","num":48,"type":"单选","stem":"能使细胞产生热休克蛋白的因素是：","opts":[{"k":"A","t":"高温"},{"k":"B","t":"缺氧"},{"k":"C","t":"中毒"},{"k":"D","t":"感染"},{"k":"E","t":"以上都是"}],"ans":["E"],"note":"","freq":1},{"id":"2-49","ch":"第六章应激","num":49,"type":"单选","stem":"下面哪项是有关“分子伴娘”的正确描述？","opts":[{"k":"A","t":"能提高细胞对多种应激原的耐受能力"},{"k":"B","t":"与受损蛋白质修复或移除有关"},{"k":"C","t":"帮助蛋白质的正确折叠、移位、维持和降解"},{"k":"D","t":"诱生性HSP即是一类重要的“分子伴娘”"},{"k":"E","t":"以上都对"}],"ans":["E"],"note":"原资料答案表与后附解析存在不一致；本题按答案表记录，请结合教材核对。","freq":1},{"id":"2-50","ch":"第六章应激","num":50,"type":"单选","stem":"下面有关急性期反应的描述哪项不正确？","opts":[{"k":"A","t":"急性期反应少数蛋白浓度可降低"},{"k":"B","t":"急性期反应构成了机体对外界刺激的保护性系统"},{"k":"C","t":"AP包括C反应蛋白、补体等"},{"k":"D","t":"急性反应时相的特点是免疫球蛋白大量生成"},{"k":"E","t":"AP主要由肝细胞合成"}],"ans":["D"],"note":"","freq":1},{"id":"2-51","ch":"第六章应激","num":51,"type":"单选","stem":"在应激中不会发生的反应是：","opts":[{"k":"A","t":"心率加快"},{"k":"B","t":"心肌收缩力增加"},{"k":"C","t":"心输出量增加"},{"k":"D","t":"皮肤血管收缩"},{"k":"E","t":"肾动脉扩张"}],"ans":["E"],"note":"","freq":1},{"id":"2-52","ch":"第六章应激","num":52,"type":"单选","stem":"一般在应激时体内分泌减少的内分泌激素是：","opts":[{"k":"A","t":"抗利尿激素"},{"k":"B","t":"胰高血糖素"},{"k":"C","t":"胰岛素"},{"k":"D","t":"糖皮质激素"},{"k":"E","t":"醛固酮"}],"ans":["C"],"note":"","freq":1},{"id":"2-53","ch":"第六章应激","num":53,"type":"单选","stem":"应激时泌尿功能主要变化表现在：","opts":[{"k":"A","t":"尿少，尿比重升高，水钠排泄减少"},{"k":"B","t":"尿少，尿比重降低，水钠排泄减少"},{"k":"C","t":"尿多，尿比重降低，水钠排泄增多"},{"k":"D","t":"尿多，尿比重升高，水钠排泄增多"},{"k":"E","t":"尿量、尿比重及水钠排泄皆正常"}],"ans":["A"],"note":"","freq":1},{"id":"2-54","ch":"第六章应激","num":54,"type":"单选","stem":"称为应激性疾病的是：","opts":[{"k":"A","t":"原发性高血压"},{"k":"B","t":"应激性溃疡"},{"k":"C","t":"溃疡性结肠炎"},{"k":"D","t":"支气管哮喘"},{"k":"E","t":"动脉粥样硬化"}],"ans":["B"],"note":"","freq":1},{"id":"2-55","ch":"第六章应激","num":55,"type":"单选","stem":"应激时泌尿系统的变化中下列哪一项不存在？","opts":[{"k":"A","t":"尿少"},{"k":"B","t":"尿比重高"},{"k":"C","t":"肾小球滤过率降低"},{"k":"D","t":"尿钾降低"},{"k":"E","t":"尿钠降低"}],"ans":["D"],"note":"","freq":1},{"id":"2-56","ch":"第六章应激","num":56,"type":"单选","stem":"下列哪些疾病属于应激相关疾病？","opts":[{"k":"A","t":"原发性高血压"},{"k":"B","t":"冠心病"},{"k":"C","t":"支气管哮喘"},{"k":"D","t":"溃疡性结肠炎"},{"k":"E","t":"以上都是"}],"ans":["E"],"note":"","freq":1},{"id":"2-57","ch":"第六章应激","num":57,"type":"单选","stem":"应激使心率增加，主要由下列哪一作用引起？","opts":[{"k":"A","t":"儿茶酚胺兴奋a受体的作用"},{"k":"B","t":"儿茶酚胺兴奋β受体的作用"},{"k":"C","t":"糖皮质激素的作用"},{"k":"D","t":"抗利尿激素的作用"},{"k":"E","t":"醛固酮的作用"}],"ans":["B"],"note":"","freq":1},{"id":"2-58","ch":"第六章应激","num":58,"type":"单选","stem":"应激时，机体免疫系统功能抑制的主要原因是：","opts":[{"k":"A","t":"吞噬细胞减少，活性降低"},{"k":"B","t":"补体、C反应蛋白等非特异性抗感染的急性期蛋白减少"},{"k":"C","t":"糖皮质激素和儿茶酚胺的分泌对免疫功能产生的抑制效应"},{"k":"D","t":"热休克蛋白在应激时合成增加的作用"},{"k":"E","t":"各种应激原对免疫系统的抑制作用"}],"ans":["C"],"note":"","freq":1},{"id":"2-59","ch":"第六章应激","num":59,"type":"单选","stem":"应激时，消化系统的改变主要表现为：","opts":[{"k":"A","t":"胃肠血管舒张、血流量增加"},{"k":"B","t":"胃酸分泌增加"},{"k":"C","t":"胃黏液蛋白分泌增加"},{"k":"D","t":"平滑肌麻痹"},{"k":"E","t":"胃黏膜糜烂、溃疡、出血"}],"ans":["E"],"note":"","freq":1},{"id":"2-60","ch":"第六章应激","num":60,"type":"单选","stem":"应激时血液系统的变化是：","opts":[{"k":"A","t":"白细胞数目增加，核左移"},{"k":"B","t":"血小板数量减少，黏附能力减弱"},{"k":"C","t":"纤维蛋白浓度降低"},{"k":"D","t":"红细胞沉降率降低"},{"k":"E","t":"凝血因子V、VI浓度降低"}],"ans":["A"],"note":"","freq":1},{"id":"2-61","ch":"第六章应激","num":61,"type":"单选","stem":"应激时机体最突出的表现是：","opts":[{"k":"A","t":"免疫功能增强"},{"k":"B","t":"造血功能增强"},{"k":"C","t":"血液重新分布"},{"k":"D","t":"白细胞数目增加"},{"k":"E","t":"神经内分泌反应"}],"ans":["E"],"note":"","freq":1},{"id":"2-62","ch":"第六章应激","num":62,"type":"单选","stem":"应激性溃疡形成的最基本条件是：","opts":[{"k":"A","t":"胆汁反流"},{"k":"B","t":"酸中毒"},{"k":"C","t":"胃黏膜缺血"},{"k":"D","t":"胃腔内H向黏膜内的反向弥散"},{"k":"E","t":"碱中毒"}],"ans":["C"],"note":"","freq":1},{"id":"2-63","ch":"第六章应激","num":63,"type":"单选","stem":"应激时应激性溃疡的发生机制和下列哪项无关？","opts":[{"k":"A","t":"胆汁反流"},{"k":"B","t":"黏膜缺血，不能及时运走黏膜内的H"},{"k":"C","t":"幽门螺旋杆菌感染"},{"k":"D","t":"胃腔内H向黏膜内的反向弥散"},{"k":"E","t":"上皮细胞能量产生不足"}],"ans":["C"],"note":"","freq":1},{"id":"2-64","ch":"第六章应激","num":64,"type":"单选","stem":"应激所致内分泌功能障碍可表现为：","opts":[{"k":"A","t":"慢性应激可致儿童生长发育缓慢"},{"k":"B","t":"慢性心理应激时GH分泌减少"},{"k":"C","t":"甲状腺轴可受抑"},{"k":"D","t":"性腺轴可受抑"},{"k":"E","t":"以上都对"}],"ans":["E"],"note":"","freq":1},{"id":"2-65","ch":"第六章应激","num":65,"type":"单选","stem":"下面有关应激的心理性反应不正确的是：","opts":[{"k":"A","t":"绝大多数应激都包含心理、情绪上的反应"},{"k":"B","t":"总是损害认知功能"},{"k":"C","t":"应激可引起情绪反应"},{"k":"D","t":"应激可致社会行为改变"},{"k":"E","t":"情绪反应可能会成为左右应激反应的关键因素"}],"ans":["B"],"note":"","freq":1},{"id":"2-66","ch":"第六章应激","num":66,"type":"单选","stem":"作为应激原的因素有","opts":[{"k":"A","t":"物理性因素"},{"k":"B","t":"化学性因素"},{"k":"C","t":"生物性因素"},{"k":"D","t":"精神性因素"},{"k":"E","t":"以上都是"}],"ans":["E"],"note":"","freq":1},{"id":"2-67","ch":"第六章应激","num":67,"type":"单选","stem":"蓝斑-交感-肾上腺髓质系统的中枢位点位于","opts":[{"k":"A","t":"海马"},{"k":"B","t":"蓝斑"},{"k":"C","t":"杏仁复合体"},{"k":"D","t":"室旁核"},{"k":"E","t":"边缘皮质"}],"ans":["B"],"note":"","freq":1},{"id":"2-68","ch":"第六章应激","num":68,"type":"单选","stem":"应激时，蓝斑-交感-肾上腺髓质系统具有防御作用，不包括","opts":[{"k":"A","t":"心率加快、心收缩力加强"},{"k":"B","t":"血液重新分布"},{"k":"C","t":"支气管收缩"},{"k":"D","t":"促糖原分解"},{"k":"E","t":"儿茶酚胺分泌增多"}],"ans":["C"],"note":"","freq":1},{"id":"2-69","ch":"第六章应激","num":69,"type":"单选","stem":"应激时糖皮质激素（GC）分泌增加对机体的保护作用不包括","opts":[{"k":"A","t":"促进蛋白质的糖异生"},{"k":"B","t":"维持循环系统对儿茶酚胺的反应性"},{"k":"C","t":"淋巴细胞减少"},{"k":"D","t":"抑制炎症介质生成．释放"},{"k":"E","t":"抗过敏作用"}],"ans":["C"],"note":"","freq":1},{"id":"2-70","ch":"第六章应激","num":70,"type":"单选","stem":"下丘脑-垂体-肾上腺皮质轴的中枢位点位于","opts":[{"k":"A","t":"蓝斑"},{"k":"B","t":"腺垂体"},{"k":"C","t":"海马"},{"k":"D","t":"室旁核"},{"k":"E","t":"杏仁体"}],"ans":["D"],"note":"","freq":1},{"id":"2-71","ch":"第六章应激","num":71,"type":"单选","stem":"应激时，与糖皮质激素分泌增多无直接关系的是","opts":[{"k":"A","t":"促进蛋白分解"},{"k":"B","t":"抑制炎症介质释放"},{"k":"C","t":"稳定溶酶体膜"},{"k":"D","t":"急性期蛋白的合成"},{"k":"E","t":"维持机体对儿茶酚胺的反应性"}],"ans":["D"],"note":"","freq":1},{"id":"2-72","ch":"第六章应激","num":72,"type":"单选","stem":"应激时糖皮质激素分泌增多是由于","opts":[{"k":"A","t":"交感神经兴奋"},{"k":"B","t":"ACTH分泌增多"},{"k":"C","t":"β-内啡肽分泌增多"},{"k":"D","t":"胰岛素分泌减少"},{"k":"E","t":"胰高血糖素分泌增多"}],"ans":["B"],"note":"","freq":1},{"id":"2-73","ch":"第六章应激","num":73,"type":"单选","stem":"应激时β-内啡肽的升高程度与下列哪种物质平行","opts":[{"k":"A","t":"生长素"},{"k":"B","t":"胰岛素"},{"k":"C","t":"肾上腺素"},{"k":"D","t":"去甲肾上腺素"},{"k":"E","t":"促肾上腺皮质激素"}],"ans":["E"],"note":"","freq":1},{"id":"2-74","ch":"第六章应激","num":74,"type":"单选","stem":"应激时β-内啡肽分泌增多，其作用不包括","opts":[{"k":"A","t":"镇痛"},{"k":"B","t":"心率增加"},{"k":"C","t":"血压降低"},{"k":"D","t":"心输出量减少"},{"k":"E","t":"抑制ACTH的分泌"}],"ans":["B"],"note":"","freq":1},{"id":"2-75","ch":"第六章应激","num":75,"type":"单选","stem":"全身适应综合征是指","opts":[{"k":"A","t":"应激原作用后，机体出现的抵抗和适应反应"},{"k":"B","t":"应激原作用后，机体出现的快速动员期"},{"k":"C","t":"劣性应激原作用后，出现一个动态的适应防御的连续过程"},{"k":"D","t":"有害刺激使机体的自稳态破坏"},{"k":"E","t":"应激的负反馈，表现为全身适应性反应"}],"ans":["C"],"note":"","freq":1},{"id":"2-76","ch":"第六章应激","num":76,"type":"单选","stem":"应激时机体最突出的反应是","opts":[{"k":"A","t":"神经-内分泌反应"},{"k":"B","t":"热休克反应"},{"k":"C","t":"急性期反应"},{"k":"D","t":"免疫反应"},{"k":"E","t":"炎症反应"}],"ans":["A"],"note":"","freq":1},{"id":"2-77","ch":"第六章应激","num":77,"type":"单选","stem":"下列哪种蛋白是负急性期反应蛋白","opts":[{"k":"A","t":"纤维蛋白原"},{"k":"B","t":"铜蓝蛋白"},{"k":"C","t":"胶原蛋白"},{"k":"D","t":"白蛋白"},{"k":"E","t":"C反应蛋白"}],"ans":["D"],"note":"","freq":1},{"id":"2-78","ch":"第六章应激","num":78,"type":"单选","stem":"应激时具有清除异物和坏死组织的功能的是","opts":[{"k":"A","t":"补体"},{"k":"B","t":"C反应蛋白（CRP）"},{"k":"C","t":"热休克蛋白"},{"k":"D","t":"白蛋白"},{"k":"E","t":"纤维蛋白原"}],"ans":["B"],"note":"","freq":1},{"id":"2-79","ch":"第六章应激","num":79,"type":"单选","stem":"可以引起热休克反应的原因是","opts":[{"k":"A","t":"高热"},{"k":"B","t":"缺氧"},{"k":"C","t":"氧自由基"},{"k":"D","t":"寒冷"},{"k":"E","t":"以上都是"}],"ans":["E"],"note":"","freq":1},{"id":"2-80","ch":"第六章应激","num":80,"type":"单选","stem":"有关热休克蛋白的叙述，错误的是","opts":[{"k":"A","t":"是一类重要的分子伴娘"},{"k":"B","t":"可由体内多种细胞生成"},{"k":"C","t":"可稳定肽链折叠状态，避免折叠错误"},{"k":"D","t":"与细胞三大物质代谢有关"},{"k":"E","t":"是一种非分泌型蛋白质"}],"ans":["D"],"note":"","freq":1},{"id":"2-81","ch":"第六章应激","num":81,"type":"单选","stem":"热休克蛋白的主要功能是","opts":[{"k":"A","t":"增加细胞对氧的摄取能力"},{"k":"B","t":"增强细胞对能量物质、葡萄糖的摄取能力"},{"k":"C","t":"稳定溶酶体膜"},{"k":"D","t":"修复受损蛋白质"},{"k":"E","t":"抑制炎症"}],"ans":["D"],"note":"","freq":1},{"id":"2-82","ch":"第六章应激","num":82,"type":"单选","stem":"严重创伤所致应激时，代谢率的变化是","opts":[{"k":"A","t":"降低"},{"k":"B","t":"正常"},{"k":"C","t":"只有当体温升高时才升高"},{"k":"D","t":"时高时低"},{"k":"E","t":"经常处在高代谢率的状态"}],"ans":["E"],"note":"","freq":1},{"id":"2-83","ch":"第六章应激","num":83,"type":"单选","stem":"应激时可能出现糖尿，其原因是","opts":[{"k":"A","t":"肾小球滤过膜受损"},{"k":"B","t":"血糖升高，超过了肾糖阈"},{"k":"C","t":"胰岛素分泌增多"},{"k":"D","t":"肾小管对葡萄糖的重吸收障碍"},{"k":"E","t":"胰高血糖素分泌减少"}],"ans":["B"],"note":"","freq":1},{"id":"2-84","ch":"第六章应激","num":84,"type":"单选","stem":"急性应激时，心、脑的变化为","opts":[{"k":"A","t":"心输出量增加"},{"k":"B","t":"心率减慢"},{"k":"C","t":"心肌收缩力减弱"},{"k":"D","t":"脑血流量显著增加"},{"k":"E","t":"脑血流量显著减少"}],"ans":["A"],"note":"","freq":1},{"id":"2-85","ch":"第六章应激","num":85,"type":"单选","stem":"急性应激时交感-肾上腺髓质系统兴奋对心脏的影响不包括","opts":[{"k":"A","t":"心率加快"},{"k":"B","t":"心肌收缩力加强"},{"k":"C","t":"心肌耗氧量减少"},{"k":"D","t":"心律失常"},{"k":"E","t":"心输出量增加"}],"ans":["C"],"note":"","freq":1},{"id":"2-86","ch":"第六章应激","num":86,"type":"单选","stem":"急性应激时血液系统的变化不包括","opts":[{"k":"A","t":"贫血"},{"k":"B","t":"血液白细胞数目增加，核左移"},{"k":"C","t":"部分凝血因子增多"},{"k":"D","t":"血小板数目增多，黏附力增强"},{"k":"E","t":"纤维蛋白原增加，血黏度增加"}],"ans":["A"],"note":"","freq":1},{"id":"2-87","ch":"第六章应激","num":87,"type":"单选","stem":"应激时泌尿系统的主要变化是","opts":[{"k":"A","t":"尿量增多，尿比重降低"},{"k":"B","t":"肾血流量增多"},{"k":"C","t":"肾小球滤过率降低"},{"k":"D","t":"水钠排泄增多"},{"k":"E","t":"肾小管重吸收功能障碍"}],"ans":["C"],"note":"","freq":1},{"id":"2-88","ch":"第六章应激","num":88,"type":"单选","stem":"慢性应激时内分泌功能障碍不包括","opts":[{"k":"A","t":"性欲减退"},{"k":"B","t":"儿童生长缓慢"},{"k":"C","t":"性腺轴的明显紊乱或受抑制"},{"k":"D","t":"月经紊乱"},{"k":"E","t":"甲亢"}],"ans":["E"],"note":"","freq":1},{"id":"2-89","ch":"第六章应激","num":89,"type":"单选","stem":"应激性溃疡是一种","opts":[{"k":"A","t":"应激后的一种皮肤表浅溃疡"},{"k":"B","t":"外伤后的一种皮肤表浅溃疡"},{"k":"C","t":"重病、重伤情况下出现的胃、十二指肠黏膜的表浅溃疡"},{"k":"D","t":"心理应激时出现的口腔溃疡"},{"k":"E","t":"癌性溃疡"}],"ans":["C"],"note":"","freq":1},{"id":"2-90","ch":"第六章应激","num":90,"type":"单选","stem":"应激性溃疡发生主要机制是","opts":[{"k":"A","t":"幽门螺杆菌感染"},{"k":"B","t":"胃泌素刺激胃酸分泌增多"},{"k":"C","t":"胃蛋白酶分泌过多，消化自身胃黏膜"},{"k":"D","t":"胃黏膜缺血和H反向扩散"},{"k":"E","t":"迷走神经刺激胃液分泌增多"}],"ans":["D"],"note":"","freq":1},{"id":"2-91","ch":"第六章应激","num":91,"type":"单选","stem":"与应激无关的疾病是","opts":[{"k":"A","t":"原发性高血压"},{"k":"B","t":"支气管哮喘"},{"k":"C","t":"冠心病"},{"k":"D","t":"血友病"},{"k":"E","t":"溃疡性结肠炎"}],"ans":["D"],"note":"本题与第 13 题题干相同。原资料此处参考答案为 A，但按教材白化病属遗传性疾病，与应激无关，故按 D 判定；请结合教材核对。","freq":1},{"id":"2-92","ch":"第六章应激","num":92,"type":"单选","stem":"急性期反应蛋白主要由下列哪一种细胞合成？","opts":[{"k":"A","t":"肥大细胞"},{"k":"B","t":"肝细胞"},{"k":"C","t":"单核吞噬细胞"},{"k":"D","t":"成纤维细胞"},{"k":"E","t":"内皮细胞"}],"ans":["D"],"note":"","freq":1},{"id":"2-93","ch":"第六章应激","num":93,"type":"单选","stem":"应激时血液系统的改变哪一项是错误的？","opts":[{"k":"A","t":"急性应激时白细胞数目减少"},{"k":"B","t":"急性应激时纤维蛋白原浓度升高"},{"k":"C","t":"急性应激时凝血因子Ⅷ升高"},{"k":"D","t":"急性应激时红细胞沉降率增快"},{"k":"E","t":"慢性应激时红细胞数目减少"}],"ans":["A"],"note":"","freq":1},{"id":"2-94","ch":"第六章应激","num":94,"type":"单选","stem":"下列哪一项在应激时具有清除异物和坏死组织的功能","opts":[{"k":"A","t":"蓝斑-交感-肾上腺髓质系统激活"},{"k":"B","t":"急性期反应蛋白"},{"k":"C","t":"热休克蛋白"},{"k":"D","t":"下丘脑-垂体-肾上腺皮质系统激活"},{"k":"E","t":"肾素-血管紧张素-醛固酮系统激活"}],"ans":["B"],"note":"","freq":1},{"id":"2-95","ch":"第六章应激","num":95,"type":"单选","stem":"下列哪一项在应激时具有提高机体对应激原的耐受力的功能","opts":[{"k":"A","t":"蓝斑-交感-肾上腺髓质系统激活"},{"k":"B","t":"急性期反应蛋白"},{"k":"C","t":"热休克蛋白"},{"k":"D","t":"下丘脑-垂体-肾上腺皮质系统激活"},{"k":"E","t":"肾素-血管紧张素-醛固酮系统激活"}],"ans":["C"],"note":"","freq":1},{"id":"2-96","ch":"第六章应激","num":96,"type":"单选","stem":"下列哪一项在应激时具有维持循环系统对儿茶酚胺的反应性的功能","opts":[{"k":"A","t":"蓝斑-交感-肾上腺髓质系统激活"},{"k":"B","t":"急性期反应蛋白"},{"k":"C","t":"热休克蛋白"},{"k":"D","t":"下丘脑-垂体-肾上腺皮质系统激活"},{"k":"E","t":"肾素-血管紧张素-醛固酮系统激活"}],"ans":["D"],"note":"","freq":2},{"id":"2-97","ch":"第六章应激","num":97,"type":"单选","stem":"在应激时具有清除自由基功能的是","opts":[{"k":"A","t":"C-反应蛋白"},{"k":"B","t":"铜蓝蛋白"},{"k":"C","t":"血清淀粉样A蛋白"},{"k":"D","t":"热休克蛋白"},{"k":"E","t":"α₁-抗糜蛋白酶"}],"ans":["B"],"note":"","freq":2},{"id":"2-98","ch":"第六章应激","num":98,"type":"单选","stem":"在应激时具有抑制蛋白酶活性的是","opts":[{"k":"A","t":"C-反应蛋白"},{"k":"B","t":"铜蓝蛋白"},{"k":"C","t":"血清淀粉样A蛋白"},{"k":"D","t":"热休克蛋白"},{"k":"E","t":"α₁-抗糜蛋白酶"}],"ans":["E"],"note":"","freq":2},{"id":"2-99","ch":"第六章应激","num":99,"type":"单选","stem":"在应激时，具有“分子伴娘”功能的是","opts":[{"k":"A","t":"C-反应蛋白"},{"k":"B","t":"铜蓝蛋白"},{"k":"C","t":"血清淀粉样A蛋白"},{"k":"D","t":"热休克蛋白"},{"k":"E","t":"α₁-抗糜蛋白酶"}],"ans":["D"],"note":"","freq":2},{"id":"2-100","ch":"第六章应激","num":100,"type":"单选","stem":"应激时，能使痛觉阈升高是因为","opts":[{"k":"A","t":"胰岛素分泌增多"},{"k":"B","t":"β-内啡肽分泌增多"},{"k":"C","t":"胰高血糖素分泌增多"},{"k":"D","t":"生长激素分泌增多"},{"k":"E","t":"儿茶酚胺分泌增多"}],"ans":["B"],"note":"","freq":1},{"id":"2-101","ch":"第六章应激","num":101,"type":"单选","stem":"应激时，促进白细胞增多，核左移是因","opts":[{"k":"A","t":"胰岛素分泌增多"},{"k":"B","t":"β-内啡肽分泌增多"},{"k":"C","t":"胰高血糖素分泌增多"},{"k":"D","t":"生长激素分泌增多"},{"k":"E","t":"儿茶酚胺分泌增多"}],"ans":["E"],"note":"","freq":1},{"id":"2-102","ch":"第六章应激","num":102,"type":"多选","stem":"下列哪些因素能引起应激","opts":[{"k":"A","t":"强光"},{"k":"B","t":"血液成分改变"},{"k":"C","t":"孤独"},{"k":"D","t":"中毒"},{"k":"E","t":"心律失常"}],"ans":["A","B","C","D","E"],"note":"","freq":1},{"id":"2-103","ch":"第六章应激","num":103,"type":"多选","stem":"应激时糖皮质激素（GC）分泌增加对机体的保护作用表现为","opts":[{"k":"A","t":"促进蛋白质的糖异生"},{"k":"B","t":"维持循环系统对儿茶酚胺的反应性"},{"k":"C","t":"淋巴细胞减少"},{"k":"D","t":"抑制炎症介质生成、释放"},{"k":"E","t":"抗过敏作用"}],"ans":["A","B","D","E"],"note":"","freq":1},{"id":"2-104","ch":"第六章应激","num":104,"type":"多选","stem":"有关热休克蛋白的叙述，正确的是","opts":[{"k":"A","t":"是一类重要的分子伴娘"},{"k":"B","t":"可由体内多种细胞生成"},{"k":"C","t":"可稳定肽链折叠状态，避免折叠错误"},{"k":"D","t":"与细胞三大物质代谢有关"},{"k":"E","t":"只存在于高等动物"}],"ans":["A","B","C"],"note":"","freq":1},{"id":"2-105","ch":"第六章应激","num":105,"type":"多选","stem":"急性应激时血液系统的变化包括","opts":[{"k":"A","t":"缺铁性贫血"},{"k":"B","t":"血液白细胞数目增加，核左移"},{"k":"C","t":"血浆黏度增高"},{"k":"D","t":"血小板数目增多，黏附力增强"},{"k":"E","t":"纤维蛋白原增加，血黏度增加"}],"ans":["B","C","D","E"],"note":"","freq":1},{"id":"2-106","ch":"第六章应激","num":106,"type":"多选","stem":"应激时，血糖升高主要是由于","opts":[{"k":"A","t":"儿茶酚胺增加"},{"k":"B","t":"糖皮质激素增加"},{"k":"C","t":"胰岛素增加"},{"k":"D","t":"胰高血糖素增加"},{"k":"E","t":"β-内啡肽"}],"ans":["A","B"],"note":"原书答案为AB，D选项也涉及血糖调节；保留原书答案供核对。","freq":1},{"id":"2-107","ch":"第六章应激","num":107,"type":"多选","stem":"应激时内分泌功能障碍包括","opts":[{"k":"A","t":"性欲减退"},{"k":"B","t":"儿童生长缓慢，"},{"k":"C","t":"性腺轴的明显紊乱或受抑制"},{"k":"D","t":"月经紊乱"},{"k":"E","t":"甲亢"}],"ans":["A","B","C","D"],"note":"","freq":1},{"id":"2-108","ch":"第六章应激","num":108,"type":"多选","stem":"能够产生AP的细胞有","opts":[{"k":"A","t":"成纤维细胞"},{"k":"B","t":"淋巴细胞"},{"k":"C","t":"肝细胞"},{"k":"D","t":"单核吞噬细胞"},{"k":"E","t":"内皮细胞"}],"ans":["A","C","D"],"note":"","freq":1}]};
+</script>
+<script>
+(function () {
+  'use strict';
+
+  var DATA = window.QUIZ_DATA;
+  var QUESTIONS = DATA.questions;
+  var CHAPTERS = DATA.chapters;
+  var QMAP = new Map(QUESTIONS.map(function (q) { return [q.id, q]; }));
+  var LS_KEY = 'patho-quiz-v1';
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) { return ESC[c]; });
+  }
+
+  var state;
+  var session;
+  var pendingMode = 'seq';
+  var view = 'home';
+  var navOpen = false;
+  var wrongFilter = { ch: 'all', type: 'all' };
+  var showWrongOptions = true;
+  var storageOK = true;
+  var toastTimer = null;
+
+  /* ---------------- persistence ---------------- */
+
+  function normalizeRecord(r) {
+    if (!r || typeof r !== 'object') return null;
+    if (!Array.isArray(r.sel)) r.sel = [];
+    r.sel = r.sel.filter(function (x) { return typeof x === 'string'; });
+    r.ok = !!r.ok;
+    r.tries = Math.max(0, parseInt(r.tries, 10) || 0);
+    r.wrong = Math.max(0, parseInt(r.wrong, 10) || 0);
+    r.mastered = !!r.mastered;
+    return r;
+  }
+
+  function normalizeSession(s) {
+    if (!s || !Array.isArray(s.ids) || !s.ids.length) return null;
+    if (typeof s.scope !== 'string') return null;
+    if (s.scope !== 'all' && s.scope !== 'wrong' && s.scope.indexOf('ch:') !== 0) return null;
+    var ch = s.scope.indexOf('ch:') === 0 ? s.scope.slice(3) : null;
+    var ids = [];
+    s.ids.forEach(function (id) {
+      var q = QMAP.get(id);
+      if (!q) return;
+      if (ch === null || q.ch === ch) ids.push(id);
+    });
+    if (!ids.length) return null;
+    s.ids = ids;
+    s.mode = s.mode === 'random' ? 'random' : 'seq';
+    s.idx = Math.min(Math.max(0, parseInt(s.idx, 10) || 0), ids.length - 1);
+    if (!s.answers || typeof s.answers !== 'object') s.answers = {};
+    if (!s.drafts || typeof s.drafts !== 'object') s.drafts = {};
+    return s;
+  }
+
+  function loadState() {
+    var base = { v: 1, rec: {}, session: null, prefMode: 'seq' };
+    var raw = null;
+    try {
+      raw = localStorage.getItem(LS_KEY);
+    } catch (e) {
+      storageOK = false;
+      return base;
+    }
+    if (!raw) return base;
+    var saved;
+    try {
+      saved = JSON.parse(raw);
+    } catch (e) {
+      return base;
+    }
+    if (!saved || saved.v !== 1) return base;
+    var rec = {};
+    if (saved.rec && typeof saved.rec === 'object') {
+      Object.keys(saved.rec).forEach(function (id) {
+        if (!QMAP.has(id)) return;
+        var r = normalizeRecord(saved.rec[id]);
+        if (r) rec[id] = r;
+      });
+    }
+    base.rec = rec;
+    base.prefMode = saved.prefMode === 'random' ? 'random' : 'seq';
+    base.session = normalizeSession(saved.session);
+    return base;
+  }
+
+  function save() {
+    state.session = session;
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+    } catch (e) {
+      if (storageOK) {
+        storageOK = false;
+        toast('无法保存进度（浏览器限制），仍可继续刷题');
+      }
+    }
+  }
+
+  /* ---------------- helpers ---------------- */
+
+  function currentQ() {
+    return session ? QMAP.get(session.ids[session.idx]) : null;
+  }
+
+  function scopeLabel(scope) {
+    if (scope === 'all') return '全部题目';
+    if (scope === 'wrong') return '错题重练';
+    if (scope && scope.indexOf('ch:') === 0) return scope.slice(3);
+    return '练习';
+  }
+
+  function modeLabel(mode) {
+    return mode === 'random' ? '随机' : '顺序';
+  }
+
+  function wrongQuestions() {
+    return QUESTIONS.filter(function (q) {
+      var r = state.rec[q.id];
+      return !!r && r.wrong > 0 && !r.mastered;
+    });
+  }
+
+  function isWrong(id) {
+    var r = state.rec[id];
+    return !!r && r.wrong > 0 && !r.mastered;
+  }
+
+  function idsForScope(scope) {
+    if (scope === 'all') {
+      return QUESTIONS.map(function (q) { return q.id; });
+    }
+    if (scope === 'wrong') {
+      return wrongQuestions().map(function (q) { return q.id; });
+    }
+    if (scope.indexOf('ch:') === 0) {
+      var ch = scope.slice(3);
+      return QUESTIONS.filter(function (q) { return q.ch === ch; }).map(function (q) { return q.id; });
+    }
+    return [];
+  }
+
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i];
+      a[i] = a[j];
+      a[j] = t;
+    }
+    return a;
+  }
+
+  function sameSet(a, b) {
+    var A = a.slice().sort();
+    var B = b.slice().sort();
+    if (A.length !== B.length) return false;
+    for (var i = 0; i < A.length; i++) {
+      if (A[i] !== B[i]) return false;
+    }
+    return true;
+  }
+
+  function getDraft(id) {
+    if (!session.drafts[id]) session.drafts[id] = [];
+    return session.drafts[id];
+  }
+
+  function toast(msg) {
+    var el = $('#toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2200);
+  }
+
+  function openDialog(dlg) {
+    if (typeof dlg.showModal === 'function') dlg.showModal();
+    else dlg.setAttribute('open', '');
+  }
+
+  function closeDialog(dlg) {
+    if (typeof dlg.close === 'function') dlg.close();
+    else dlg.removeAttribute('open');
+  }
+
+  function askConfirm(opts) {
+    var dlg = $('#confirm-dialog');
+    if (dlg.open) return Promise.resolve(false);
+    if (typeof dlg.showModal !== 'function') {
+      return Promise.resolve(window.confirm(opts.title + '\n\n' + opts.text));
+    }
+    $('#confirm-title').textContent = opts.title;
+    $('#confirm-text').textContent = opts.text;
+    var okBtn = $('#confirm-ok');
+    okBtn.textContent = opts.okText || '确定';
+    okBtn.className = 'btn ' + (opts.danger ? 'danger' : 'primary');
+    return new Promise(function (resolve) {
+      var result = false;
+      function cleanup() {
+        okBtn.removeEventListener('click', onOk);
+        $('#confirm-cancel').removeEventListener('click', onCancel);
+        dlg.removeEventListener('cancel', onEsc);
+        dlg.removeEventListener('close', onClose);
+      }
+      function finish(v) {
+        result = v;
+        closeDialog(dlg);
+      }
+      function onOk() { finish(true); }
+      function onCancel() { finish(false); }
+      function onEsc(e) { e.preventDefault(); finish(false); }
+      function onClose() {
+        cleanup();
+        resolve(result);
+      }
+      okBtn.addEventListener('click', onOk);
+      $('#confirm-cancel').addEventListener('click', onCancel);
+      dlg.addEventListener('cancel', onEsc);
+      dlg.addEventListener('close', onClose);
+      openDialog(dlg);
+    });
+  }
+
+  function showView(name) {
+    view = name;
+    ['home', 'practice', 'wrong'].forEach(function (v) {
+      document.getElementById('view-' + v).hidden = (v !== name);
+    });
+    if (name === 'home') renderHome();
+    if (name === 'wrong') renderWrong();
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------------- home ---------------- */
+
+  function renderHome() {
+    var total = QUESTIONS.length;
+    var attempted = 0;
+    var correct = 0;
+    QUESTIONS.forEach(function (q) {
+      var r = state.rec[q.id];
+      if (!r) return;
+      attempted++;
+      if (r.ok) correct++;
+    });
+    var wrongN = wrongQuestions().length;
+
+    $('#stat-done').textContent = attempted;
+    $('#stat-total').textContent = total;
+    $('#stat-acc').textContent = attempted ? Math.round(correct / attempted * 100) + '%' : '—';
+    $('#stat-wrong').textContent = wrongN;
+
+    var rslot = $('#resume-slot');
+    var answered = session ? Object.keys(session.answers || {}).length : 0;
+    var allDone = !!session && answered === session.ids.length;
+    if (session && (answered > 0 || session.idx > 0)) {
+      rslot.innerHTML =
+        '<div class="resume">' +
+          '<div class="grow">' +
+            '<div class="resume-kicker">' + (allDone ? '上次练习' : '继续上次') + '</div>' +
+            '<div class="resume-title">' + esc(scopeLabel(session.scope)) + ' · ' + modeLabel(session.mode) + '</div>' +
+            '<div class="resume-sub">' + (allDone
+              ? '本轮已完成 · 共 ' + session.ids.length + ' 题'
+              : '第 ' + (session.idx + 1) + ' / ' + session.ids.length + ' 题 · 本轮已答 ' + answered + ' 题') + '</div>' +
+          '</div>' +
+          '<button type="button" class="btn primary" id="btn-resume">' + (allDone ? '查看结果' : '继续') + '</button>' +
+        '</div>';
+      rslot.hidden = false;
+    } else {
+      rslot.innerHTML = '';
+      rslot.hidden = true;
+    }
+
+    $('#chapter-list').innerHTML = CHAPTERS.map(function (ch) {
+      var qs = QUESTIONS.filter(function (q) { return q.ch === ch; });
+      var a = 0;
+      var c = 0;
+      qs.forEach(function (q) {
+        var r = state.rec[q.id];
+        if (!r) return;
+        a++;
+        if (r.ok) c++;
+      });
+      var pct = a ? Math.round(c / a * 100) : null;
+      return '<button type="button" class="chapter-card" data-ch="' + esc(ch) + '">' +
+        '<div class="chapter-top">' +
+          '<span class="chapter-name">' + esc(ch) + '</span>' +
+          '<span class="chapter-count">' + qs.length + ' 题</span>' +
+        '</div>' +
+        '<div class="bar"><i style="width:' + (a / qs.length * 100) + '%"></i></div>' +
+        '<div class="chapter-foot">' +
+          '<span>已练 ' + a + ' / ' + qs.length + '</span>' +
+          '<span>' + (pct === null ? '尚未练习' : '正确率 ' + pct + '%') + '</span>' +
+        '</div>' +
+      '</button>';
+    }).join('');
+
+    $$('#mode-seg button').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-mode') === pendingMode);
+    });
+
+    var wp = $('#btn-wrong-practice');
+    wp.disabled = wrongN === 0;
+    wp.textContent = wrongN ? '错题重练（' + wrongN + '）' : '暂无错题';
+
+    $('#btn-wrong-book').disabled = false;
+  }
+
+  function startSession(scope, mode, focusId) {
+    var ids = idsForScope(scope);
+    if (!ids.length) {
+      toast(scope === 'wrong' ? '错题本是空的，先做几道题吧' : '暂无题目');
+      return;
+    }
+    if (mode === 'random') shuffle(ids);
+    var idx = 0;
+    if (focusId) {
+      var i = ids.indexOf(focusId);
+      if (i >= 0) idx = i;
+    }
+    session = {
+      scope: scope,
+      mode: mode,
+      ids: ids,
+      idx: idx,
+      answers: {},
+      drafts: {},
+      started: Date.now()
+    };
+    navOpen = false;
+    save();
+    renderPractice();
+    showView('practice');
+  }
+
+  /* ---------------- practice ---------------- */
+
+  function renderPractice() {
+    var q = currentQ();
+    if (!q) {
+      showView('home');
+      return;
+    }
+    var len = session.ids.length;
+    var answered = Object.keys(session.answers).length;
+    $('#practice-title').textContent = scopeLabel(session.scope) + ' · ' + modeLabel(session.mode);
+    $('#practice-progress-text').textContent = '第 ' + (session.idx + 1) + ' / ' + len + ' 题';
+    $('#practice-progress-sub').textContent = '本轮已答 ' + answered + ' 题';
+    $('#practice-progress-bar').style.width = (len ? answered / len * 100 : 0) + '%';
+    $('#btn-nav-toggle').textContent = navOpen ? '收起列表' : '题目列表';
+    $('#btn-nav-toggle').setAttribute('aria-expanded', navOpen ? 'true' : 'false');
+    renderNavigator();
+    renderQuestion();
+    renderActionbar();
+  }
+
+  function updateProgress() {
+    if (!session) return;
+    var len = session.ids.length;
+    var answered = Object.keys(session.answers).length;
+    $('#practice-progress-text').textContent = '第 ' + (session.idx + 1) + ' / ' + len + ' 题';
+    $('#practice-progress-sub').textContent = '本轮已答 ' + answered + ' 题';
+    $('#practice-progress-bar').style.width = (len ? answered / len * 100 : 0) + '%';
+  }
+
+  function renderNavigator() {
+    var nav = $('#navigator');
+    if (!navOpen || !session) {
+      nav.hidden = true;
+      return;
+    }
+    nav.hidden = false;
+    $('#nav-grid').innerHTML = session.ids.map(function (id, i) {
+      var a = session.answers[id];
+      var cls = 'nav-cell' + (a ? (a.ok ? ' ok' : ' bad') : '') + (i === session.idx ? ' current' : '');
+      var stateText = a ? (a.ok ? '答对' : '答错') : '未答';
+      return '<button type="button" class="' + cls + '" data-i="' + i + '" title="第 ' + (i + 1) + ' 题 · ' + stateText + '">' + (i + 1) + '</button>';
+    }).join('');
+
+    var grid = $('#nav-grid');
+    var cur = grid.querySelector('.nav-cell.current');
+    if (cur) {
+      var gr = grid.getBoundingClientRect();
+      var cr = cur.getBoundingClientRect();
+      if (cr.top < gr.top || cr.bottom > gr.bottom) {
+        grid.scrollTop += (cr.top - gr.top) - (grid.clientHeight - cur.offsetHeight) / 2;
+      }
+    }
+  }
+
+  function renderQuestion() {
+    var q = currentQ();
+    var ans = session.answers[q.id];
+    var locked = !!ans;
+    var draft = locked ? [] : getDraft(q.id);
+    var showCh = session.scope === 'all' || session.scope === 'wrong';
+
+    var optsHTML = q.opts.map(function (o) {
+      var cls = 'opt';
+      var mark = '';
+      var pressed = 'false';
+      if (locked) {
+        cls += ' answered';
+        if (q.ans.indexOf(o.k) >= 0) {
+          cls += ' correct';
+          mark = '✓';
+        } else if (ans.sel.indexOf(o.k) >= 0) {
+          cls += ' wrong';
+          mark = '✕';
+        }
+      } else if (q.type === '多选' && draft.indexOf(o.k) >= 0) {
+        cls += ' selected';
+        mark = '✓';
+        pressed = 'true';
+      }
+      return '<button type="button" class="' + cls + '" data-k="' + o.k + '"' +
+        (locked ? ' disabled' : ' aria-pressed="' + pressed + '"') + '>' +
+        '<span class="key">' + o.k + '</span>' +
+        '<span class="text">' + esc(o.t) + '</span>' +
+        '<span class="mark" aria-hidden="true">' + mark + '</span>' +
+      '</button>';
+    }).join('');
+
+    var meta = '<div class="qmeta">' +
+      '<span class="qnum">第 ' + (session.idx + 1) + ' 题</span>' +
+      (showCh ? '<span class="tag">' + esc(q.ch) + '</span>' : '') +
+      '<span class="tag type">' + (q.type === '多选' ? '多选' : '单选') + '</span>' +
+      (q.freq >= 2 ? '<span class="tag hot" title="原资料中多次出现">高频</span>' : '') +
+    '</div>';
+
+    var hint = (!locked && q.type === '多选')
+      ? '<p class="q-hint">多选题：选好全部选项后点“提交答案”。</p>'
+      : '';
+
+    $('#question-area').innerHTML =
+      '<article class="qcard">' +
+        meta +
+        '<h2 class="stem">' + esc(q.stem) + '</h2>' +
+        hint +
+        '<div class="options" role="group" aria-label="选项">' + optsHTML + '</div>' +
+        feedbackHTML(q, ans) +
+        (q.note ? '<div class="note"><b>提示</b>　' + esc(q.note) + '</div>' : '') +
+      '</article>' +
+      '<p class="keyhint">键盘：A–E 选择 · Enter 下一题 · ← → 切换</p>';
+  }
+
+  function feedbackHTML(q, ans) {
+    if (!ans) return '';
+    var right = q.ans.join('、');
+    var actions = '<button type="button" class="fb-btn" data-act="retry">重做</button>';
+    if (ans.ok && isWrong(q.id)) {
+      actions += '<button type="button" class="fb-btn" data-act="master">移出错题本</button>';
+    }
+    var body = ans.ok
+      ? '正确答案：<b>' + right + '</b>'
+      : '你的答案：<b>' + (ans.sel.join('、') || '未选') + '</b>　正确答案：<b>' + right + '</b>';
+    return '<div class="feedback ' + (ans.ok ? 'ok' : 'bad') + '" role="status">' +
+      '<div class="fb-main">' +
+        '<div class="fb-title">' + (ans.ok ? '回答正确' : '回答错误') + '</div>' +
+        '<div class="fb-sub">' + body + '</div>' +
+      '</div>' +
+      '<div class="fb-actions">' + actions + '</div>' +
+    '</div>';
+  }
+
+  function renderActionbar() {
+    var q = currentQ();
+    var ans = session.answers[q.id];
+    var last = session.idx === session.ids.length - 1;
+    var multiOpen = q.type === '多选' && !ans;
+    var draft = multiOpen ? getDraft(q.id) : [];
+    var right;
+
+    if (multiOpen) {
+      right = '<button type="button" class="btn primary next" id="btn-submit"' + (draft.length ? '' : ' disabled') + '>提交答案</button>' +
+        '<button type="button" class="btn ghost skip" id="btn-skip">跳过</button>';
+    } else {
+      right = '<button type="button" class="btn ' + (ans ? 'primary' : 'ghost') + ' next" id="btn-next">' +
+        (last ? '完成练习' : '下一题') + '</button>';
+    }
+
+    $('#actionbar').innerHTML = '<div class="actionbar-inner">' +
+      '<button type="button" class="btn ghost prev" id="btn-prev"' + (session.idx === 0 ? ' disabled' : '') + '>上一题</button>' +
+      right +
+    '</div>';
+  }
+
+  function chooseOption(k) {
+    var q = currentQ();
+    if (!q || session.answers[q.id]) return;
+    if (q.type === '多选') {
+      var d = getDraft(q.id);
+      var i = d.indexOf(k);
+      if (i >= 0) d.splice(i, 1);
+      else d.push(k);
+      save();
+      renderQuestion();
+      renderActionbar();
+    } else {
+      submitAnswer([k]);
+    }
+  }
+
+  function submitMulti() {
+    var q = currentQ();
+    if (!q || session.answers[q.id]) return;
+    var d = getDraft(q.id).slice();
+    if (!d.length) {
+      toast('请先选择答案');
+      return;
+    }
+    submitAnswer(d);
+  }
+
+  function submitAnswer(sel) {
+    var q = currentQ();
+    if (!q || session.answers[q.id]) return;
+    sel = sel.slice().sort();
+    var ok = sameSet(sel, q.ans);
+    session.answers[q.id] = { sel: sel, ok: ok };
+    delete session.drafts[q.id];
+
+    var r = state.rec[q.id];
+    if (!r) {
+      r = state.rec[q.id] = { tries: 0, wrong: 0, mastered: false };
+    }
+    r.sel = sel.slice();
+    r.ok = ok;
+    r.tries = (r.tries || 0) + 1;
+    r.ts = Date.now();
+    if (!ok) {
+      r.wrong = (r.wrong || 0) + 1;
+      r.mastered = false;
+    }
+    save();
+    renderQuestion();
+    renderActionbar();
+    renderNavigator();
+    updateProgress();
+    requestAnimationFrame(revealFeedback);
+  }
+
+  function revealFeedback() {
+    var fb = $('#question-area .feedback');
+    if (!fb) return;
+    var rect = fb.getBoundingClientRect();
+    var bar = $('#actionbar').getBoundingClientRect();
+    if (rect.bottom > bar.top - 8 || rect.top < 0) {
+      try {
+        fb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      } catch (e) {
+        fb.scrollIntoView(false);
+      }
+    }
+  }
+
+  function retryCurrent() {
+    var q = currentQ();
+    if (!q) return;
+    delete session.answers[q.id];
+    delete session.drafts[q.id];
+    save();
+    renderPractice();
+    window.scrollTo(0, 0);
+  }
+
+  function masterQuestion(id) {
+    var r = state.rec[id];
+    if (!r) return;
+    r.mastered = true;
+    save();
+    toast('已移出错题本');
+  }
+
+  function goTo(n) {
+    if (!session) return;
+    if (n < 0) return;
+    if (n >= session.ids.length) {
+      openDone();
+      return;
+    }
+    session.idx = n;
+    navOpen = false;
+    save();
+    renderPractice();
+    window.scrollTo(0, 0);
+  }
+
+  function openDone() {
+    var total = session.ids.length;
+    var vals = Object.keys(session.answers).map(function (id) { return session.answers[id]; });
+    var answered = vals.length;
+    var correct = vals.filter(function (a) { return a.ok; }).length;
+    var pct = answered ? Math.round(correct / answered * 100) : 0;
+    $('#done-title').textContent = answered >= total ? '本轮练习完成' : '本轮练习结束';
+    $('#done-text').textContent = scopeLabel(session.scope) + ' · ' + modeLabel(session.mode) +
+      (answered < total ? '（还有 ' + (total - answered) + ' 题未作答）' : '');
+    $('#done-stats').innerHTML =
+      '<div class="done-stat"><b>' + answered + '</b><span>已答</span></div>' +
+      '<div class="done-stat"><b>' + correct + '</b><span>答对</span></div>' +
+      '<div class="done-stat"><b>' + pct + '%</b><span>正确率</span></div>';
+    $('#done-note').textContent = answered < total ? '可以继续把剩下的题做完。' : '';
+    $('#done-continue').hidden = answered >= total;
+    $('#done-continue').classList.toggle('primary', answered < total);
+    $('#done-continue').classList.toggle('ghost', answered >= total);
+    $('#done-home').classList.toggle('primary', answered >= total);
+    $('#done-home').classList.toggle('ghost', answered < total);
+    openDialog($('#done-dialog'));
+  }
+
+  function retrySession() {
+    session.answers = {};
+    session.drafts = {};
+    session.idx = 0;
+    save();
+    renderPractice();
+    showView('practice');
+  }
+
+  /* ---------------- wrong book ---------------- */
+
+  function renderWrong() {
+    var all = wrongQuestions();
+    var corrected = all.filter(function (q) { return state.rec[q.id].ok; }).length;
+    var filtered = all.filter(function (q) {
+      if (wrongFilter.ch !== 'all' && q.ch !== wrongFilter.ch) return false;
+      if (wrongFilter.type !== 'all' && q.type !== wrongFilter.type) return false;
+      return true;
+    });
+
+    $('#wrong-summary').innerHTML =
+      '<div class="grow">' +
+        '<div class="big">共 <strong>' + all.length + '</strong> 道错题</div>' +
+        '<div class="sub">' + (corrected
+          ? '其中 ' + corrected + ' 道已答对，可移出错题本'
+          : '做错的题会自动收进这里') + '</div>' +
+      '</div>' +
+      '<div class="summary-actions">' +
+        (corrected ? '<button type="button" class="mini-btn" data-wrong-act="master-ok">移出已答对</button>' : '') +
+        (all.length ? '<button type="button" class="mini-btn" data-wrong-act="clear-all">清空错题本</button>' : '') +
+      '</div>';
+
+    var chCounts = {};
+    all.forEach(function (q) { chCounts[q.ch] = (chCounts[q.ch] || 0) + 1; });
+    var typeCounts = { '单选': 0, '多选': 0 };
+    all.forEach(function (q) { typeCounts[q.type] = (typeCounts[q.type] || 0) + 1; });
+
+    var chips = '<button type="button" class="chip' + (wrongFilter.ch === 'all' ? ' active' : '') + '" data-filter-ch="all">全部<span class="n">' + all.length + '</span></button>';
+    CHAPTERS.forEach(function (ch) {
+      chips += '<button type="button" class="chip' + (wrongFilter.ch === ch ? ' active' : '') + '" data-filter-ch="' + esc(ch) + '">' +
+        esc(ch) + '<span class="n">' + (chCounts[ch] || 0) + '</span></button>';
+    });
+    $('#wrong-filters').innerHTML = chips;
+
+    var typeChips = '<button type="button" class="chip' + (wrongFilter.type === 'all' ? ' active' : '') + '" data-filter-type="all">全部题型<span class="n">' + all.length + '</span></button>' +
+      ['单选', '多选'].map(function (t) {
+        return '<button type="button" class="chip' + (wrongFilter.type === t ? ' active' : '') + '" data-filter-type="' + t + '">' +
+          t + '<span class="n">' + (typeCounts[t] || 0) + '</span></button>';
+      }).join('') +
+      '<button type="button" class="chip" data-toggle-options>' + (showWrongOptions ? '隐藏选项' : '显示选项') + '</button>';
+    $('#wrong-type-filters').innerHTML = typeChips;
+
+    $('#btn-wrong-retry-all').disabled = all.length === 0;
+
+    if (!all.length) {
+      $('#wrong-list').innerHTML =
+        '<div class="empty">' +
+          '<div class="em-icon">✓</div>' +
+          '<h3>暂无错题</h3>' +
+          '<p>做错的题会自动收进这里，方便集中复习。</p>' +
+          '<button type="button" class="btn primary" data-wrong-act="go-practice">去练习</button>' +
+        '</div>';
+      return;
+    }
+
+    if (!filtered.length) {
+      $('#wrong-list').innerHTML =
+        '<div class="empty">' +
+          '<div class="em-icon">·</div>' +
+          '<h3>没有符合条件的错题</h3>' +
+          '<p>换个章节或题型看看。</p>' +
+          '<button type="button" class="btn ghost" data-wrong-act="reset-filter">清除筛选</button>' +
+        '</div>';
+      return;
+    }
+
+    $('#wrong-list').innerHTML = filtered.map(function (q) {
+      var rec = state.rec[q.id];
+      var optsHTML = '';
+      if (showWrongOptions) {
+        optsHTML = '<div class="options">' + q.opts.map(function (o) {
+          var cls = 'opt static answered';
+          var mark = '';
+          if (q.ans.indexOf(o.k) >= 0) {
+            cls += ' correct';
+            mark = '✓';
+          } else if (rec.sel.indexOf(o.k) >= 0) {
+            cls += ' wrong';
+            mark = '✕';
+          }
+          return '<div class="' + cls + '">' +
+            '<span class="key">' + o.k + '</span>' +
+            '<span class="text">' + esc(o.t) + '</span>' +
+            '<span class="mark" aria-hidden="true">' + mark + '</span>' +
+          '</div>';
+        }).join('') + '</div>';
+      }
+      return '<article class="wrong-item">' +
+        '<div class="wrong-head">' +
+          '<span class="grow">' + esc(q.ch) + ' · 原题 ' + q.num + '</span>' +
+          '<span class="tag type">' + q.type + '</span>' +
+          (q.freq >= 2 ? '<span class="tag hot">高频</span>' : '') +
+          (rec.ok ? '<span class="tag ok">已答对</span>' : '') +
+        '</div>' +
+        '<h3>' + esc(q.stem) + '</h3>' +
+        optsHTML +
+        '<div class="wrong-answer">' +
+          '<span>你的答案 <b class="bad">' + (rec.sel.join('、') || '未选') + '</b></span>' +
+          '<span>正确答案 <b class="good">' + q.ans.join('、') + '</b></span>' +
+          '<span>已错 ' + rec.wrong + ' 次</span>' +
+        '</div>' +
+        (q.note ? '<div class="note"><b>提示</b>　' + esc(q.note) + '</div>' : '') +
+        '<div class="wrong-actions">' +
+          '<button type="button" class="btn ghost" data-wrong-act="retry" data-id="' + q.id + '">重做本题</button>' +
+          '<button type="button" class="btn ghost" data-wrong-act="remove" data-id="' + q.id + '">移出错题本</button>' +
+        '</div>' +
+      '</article>';
+    }).join('');
+  }
+
+  /* ---------------- events ---------------- */
+
+  function bindEvents() {
+    $('#chapter-list').addEventListener('click', function (e) {
+      var card = e.target.closest('.chapter-card');
+      if (!card) return;
+      startSession('ch:' + card.getAttribute('data-ch'), pendingMode);
+    });
+
+    $('#mode-seg').addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-mode]');
+      if (!b) return;
+      pendingMode = b.getAttribute('data-mode');
+      state.prefMode = pendingMode;
+      save();
+      $$('#mode-seg button').forEach(function (x) {
+        x.classList.toggle('active', x === b);
+      });
+    });
+
+    $('#btn-start-all').addEventListener('click', function () {
+      startSession('all', pendingMode);
+    });
+
+    $('#btn-wrong-practice').addEventListener('click', function () {
+      startSession('wrong', 'seq');
+    });
+
+    $('#btn-wrong-book').addEventListener('click', function () {
+      showView('wrong');
+    });
+
+    $('#stat-wrong-card').addEventListener('click', function () {
+      showView('wrong');
+    });
+
+    $('#resume-slot').addEventListener('click', function (e) {
+      if (!e.target.closest('#btn-resume')) return;
+      if (!session) return;
+      renderPractice();
+      showView('practice');
+      if (Object.keys(session.answers).length === session.ids.length) openDone();
+    });
+
+    $('#btn-reset').addEventListener('click', function () {
+      askConfirm({
+        title: '清空全部记录？',
+        text: '练习进度、正确率和错题本都会清空，且无法恢复。',
+        okText: '全部清空',
+        danger: true
+      }).then(function (ok) {
+        if (!ok) return;
+        state = { v: 1, rec: {}, session: null, prefMode: pendingMode };
+        session = null;
+        save();
+        showView('home');
+        toast('已清空全部记录');
+      });
+    });
+
+    $('#btn-practice-back').addEventListener('click', function () {
+      showView('home');
+    });
+
+    $('#btn-nav-toggle').addEventListener('click', function () {
+      navOpen = !navOpen;
+      renderNavigator();
+      $('#btn-nav-toggle').textContent = navOpen ? '收起列表' : '题目列表';
+      $('#btn-nav-toggle').setAttribute('aria-expanded', navOpen ? 'true' : 'false');
+      if (navOpen) window.scrollTo(0, 0);
+    });
+
+    $('#nav-grid').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-i]');
+      if (!b) return;
+      var i = parseInt(b.getAttribute('data-i'), 10);
+      if (isNaN(i)) return;
+      session.idx = i;
+      navOpen = false;
+      save();
+      renderPractice();
+      window.scrollTo(0, 0);
+    });
+
+    $('#question-area').addEventListener('click', function (e) {
+      var fb = e.target.closest('[data-act]');
+      if (fb) {
+        var act = fb.getAttribute('data-act');
+        var q = currentQ();
+        if (!q) return;
+        if (act === 'retry') retryCurrent();
+        else if (act === 'master') {
+          masterQuestion(q.id);
+          renderQuestion();
+        }
+        return;
+      }
+      var opt = e.target.closest('.opt[data-k]');
+      if (!opt) return;
+      chooseOption(opt.getAttribute('data-k'));
+    });
+
+    $('#actionbar').addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      if (b.id === 'btn-prev') goTo(session.idx - 1);
+      else if (b.id === 'btn-next') goTo(session.idx + 1);
+      else if (b.id === 'btn-submit') submitMulti();
+      else if (b.id === 'btn-skip') goTo(session.idx + 1);
+    });
+
+    $('#btn-wrong-back').addEventListener('click', function () {
+      showView('home');
+    });
+
+    $('#btn-wrong-retry-all').addEventListener('click', function () {
+      startSession('wrong', 'seq');
+    });
+
+    $('#wrong-filters').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-filter-ch]');
+      if (!b) return;
+      wrongFilter.ch = b.getAttribute('data-filter-ch');
+      renderWrong();
+    });
+
+    $('#wrong-type-filters').addEventListener('click', function (e) {
+      var toggle = e.target.closest('[data-toggle-options]');
+      if (toggle) {
+        showWrongOptions = !showWrongOptions;
+        renderWrong();
+        return;
+      }
+      var b = e.target.closest('[data-filter-type]');
+      if (!b) return;
+      wrongFilter.type = b.getAttribute('data-filter-type');
+      renderWrong();
+    });
+
+    $('#wrong-list').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-wrong-act]');
+      if (!b) return;
+      var act = b.getAttribute('data-wrong-act');
+      if (act === 'retry') {
+        startSession('wrong', 'seq', b.getAttribute('data-id'));
+      } else if (act === 'remove') {
+        masterQuestion(b.getAttribute('data-id'));
+        renderWrong();
+      } else if (act === 'go-practice') {
+        startSession('all', pendingMode);
+      } else if (act === 'reset-filter') {
+        wrongFilter = { ch: 'all', type: 'all' };
+        renderWrong();
+      }
+    });
+
+    $('#wrong-summary').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-wrong-act]');
+      if (!b) return;
+      var act = b.getAttribute('data-wrong-act');
+      if (act === 'master-ok') {
+        var n = 0;
+        wrongQuestions().forEach(function (q) {
+          if (state.rec[q.id].ok) {
+            state.rec[q.id].mastered = true;
+            n++;
+          }
+        });
+        save();
+        renderWrong();
+        toast('已移出 ' + n + ' 道已答对的错题');
+      } else if (act === 'clear-all') {
+        askConfirm({
+          title: '清空错题本？',
+          text: '所有错题会从错题本移除，答题记录和正确率会保留。',
+          okText: '清空'
+        }).then(function (ok) {
+          if (!ok) return;
+          wrongQuestions().forEach(function (q) {
+            state.rec[q.id].mastered = true;
+          });
+          save();
+          renderWrong();
+          toast('错题本已清空');
+        });
+      }
+    });
+
+    $('#done-home').addEventListener('click', function () {
+      closeDialog($('#done-dialog'));
+      showView('home');
+    });
+
+    $('#done-retry').addEventListener('click', function () {
+      closeDialog($('#done-dialog'));
+      retrySession();
+    });
+
+    $('#done-continue').addEventListener('click', function () {
+      closeDialog($('#done-dialog'));
+      var idx = -1;
+      for (var i = 0; i < session.ids.length; i++) {
+        if (!session.answers[session.ids[i]]) { idx = i; break; }
+      }
+      if (idx < 0) idx = session.ids.length - 1;
+      session.idx = idx;
+      save();
+      renderPractice();
+      window.scrollTo(0, 0);
+    });
+
+    $('#done-wrong').addEventListener('click', function () {
+      closeDialog($('#done-dialog'));
+      showView('wrong');
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (view !== 'practice' || !session) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (document.querySelector('dialog[open]')) return;
+      var tag = (e.target.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+      var q = currentQ();
+      if (!q) return;
+      var ans = session.answers[q.id];
+
+      var letter = null;
+      if (/^[a-eA-E]$/.test(e.key)) letter = e.key.toUpperCase();
+      else if (/^[1-5]$/.test(e.key)) letter = 'ABCDE'.charAt(parseInt(e.key, 10) - 1);
+
+      if (letter && q.opts.some(function (o) { return o.k === letter; })) {
+        e.preventDefault();
+        if (!ans) chooseOption(letter);
+        return;
+      }
+      if (e.key === 'Enter') {
+        if (tag === 'button') return;
+        e.preventDefault();
+        if (!ans && q.type === '多选') submitMulti();
+        else goTo(session.idx + 1);
+        return;
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goTo(session.idx + 1);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goTo(session.idx - 1);
+      }
+    });
+  }
+
+  /* ---------------- boot ---------------- */
+
+  state = loadState();
+  session = state.session;
+  pendingMode = state.prefMode;
+  bindEvents();
+  showView('home');
+  if (!storageOK) {
+    setTimeout(function () {
+      toast('浏览器未开启本地存储，进度可能无法保存');
+    }, 500);
+  }
+})();
+
+</script>
+</body>
+</html>
